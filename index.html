@@ -1,0 +1,2351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Travel Plan · HK · Shenzhen · Guangzhou</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f6f1e8;
+    --bg-2: #efe7d8;
+    --paper: #fbf7ef;
+    --ink: #1f1b16;
+    --ink-2: #4a4239;
+    --muted: #8a7f70;
+    --line: #e3d9c6;
+    --line-strong: #c9bda4;
+    --accent: oklch(62% 0.14 45);
+    --accent-ink: oklch(38% 0.10 45);
+    --accent-bg: oklch(95% 0.03 75);
+    --leaf: oklch(55% 0.10 150);
+    --leaf-bg: oklch(94% 0.04 150);
+    --sky: oklch(55% 0.12 240);
+    --sky-bg: oklch(94% 0.04 240);
+    --danger: oklch(55% 0.18 25);
+    --shadow: 0 1px 0 rgba(31,27,22,0.04), 0 8px 24px -12px rgba(31,27,22,0.18);
+    --radius: 14px;
+    --transition-theme: background .2s ease, color .2s ease, border-color .2s ease;
+  }
+
+  /* ── Dark mode ───────────────────────────────────────────── */
+  [data-theme="dark"] {
+    --bg: #1a1510;
+    --bg-2: #231e17;
+    --paper: #201b14;
+    --ink: #f0e8d8;
+    --ink-2: #c4b8a4;
+    --muted: #7a7060;
+    --line: #332c22;
+    --line-strong: #4a4030;
+    --accent: oklch(68% 0.16 48);
+    --accent-ink: oklch(80% 0.12 55);
+    --accent-bg: oklch(22% 0.06 45);
+    --leaf: oklch(62% 0.12 150);
+    --leaf-bg: oklch(20% 0.05 150);
+    --sky: oklch(62% 0.13 240);
+    --sky-bg: oklch(20% 0.05 240);
+    --danger: oklch(62% 0.20 25);
+    --shadow: 0 1px 0 rgba(0,0,0,0.2), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+  [data-theme="dark"] .btn:hover { background: var(--bg-2); border-color: var(--ink-2); }
+  [data-theme="dark"] .btn.primary { background: var(--ink); color: var(--bg); }
+  [data-theme="dark"] .btn.primary:hover { background: #fff; color: #1a1510; }
+  [data-theme="dark"] .input, [data-theme="dark"] .textarea, [data-theme="dark"] .select { background: var(--bg-2); }
+  [data-theme="dark"] .day-card { background: var(--paper); }
+  [data-theme="dark"] .meta-chip { background: rgba(255,255,255,0.06); }
+  [data-theme="dark"] .place { background: var(--bg-2); }
+  [data-theme="dark"] .file-button { background: var(--bg-2); }
+  [data-theme="dark"] .add-place-form { background: var(--bg-2); }
+  [data-theme="dark"] .img-uploader { background: var(--bg-2); }
+  [data-theme="dark"] .map-picker-menu { background: var(--paper); }
+  [data-theme="dark"] .hero { background: radial-gradient(120% 100% at 100% 0%, var(--accent-bg) 0%, transparent 55%), var(--paper); }
+  [data-theme="dark"] #search-bar { background: var(--bg-2); }
+  [data-theme="dark"] .search-result-match { background: oklch(68% 0.16 48 / 0.25); color: var(--accent-ink); }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input, textarea, select { font-family: inherit; color: inherit; }
+  .display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.01em; }
+
+  .app { max-width: 1240px; margin: 0 auto; padding: 32px 32px 80px; }
+  @media (max-width: 720px) {
+    .app { padding: 16px 14px 60px; }
+    header.top { margin-bottom: 18px; }
+    .brand-mark { width: 34px; height: 34px; font-size: 19px; }
+    .brand-text .t { font-size: 22px; }
+    .brand-text .s { font-size: 11px; }
+    .top-actions .btn { padding: 8px 11px; font-size: 12px; }
+    .trip-list { position: static; top: auto; }
+    .hero { padding: 20px 18px 18px; }
+    .hero h1 { font-size: 28px; }
+    .hero-meta { gap: 8px; margin-top: 10px; }
+    .meta-chip { font-size: 11.5px; padding: 4px 9px; }
+    .section { padding: 18px; }
+    .section-head h2, .toggle-btn { font-size: 17px !important; }
+    .place { padding: 12px; gap: 10px; grid-template-columns: 36px 1fr; }
+    .place .badge { width: 32px; height: 32px; flex: 0 0 32px; }
+    .place-thumb { display: none; }
+    .place-body { grid-column: 1 / span 2; }
+    .place-actions { grid-column: 1 / span 2; justify-content: flex-end; gap: 6px; flex-wrap: wrap; }
+    .place-actions .btn.icon, .map-link { padding: 6px 9px; }
+    .place-tabs { width: 100%; overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+    .place-tab { white-space: nowrap; flex-shrink: 0; }
+    .day-card { padding: 14px; }
+    .day-head .day-num { width: 28px; height: 28px; font-size: 12px; flex: 0 0 28px; }
+    .modal { max-width: 100%; }
+    .modal-head, .modal-body, .modal-foot { padding-left: 18px; padding-right: 18px; }
+  }
+  header.top {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: var(--ink); color: var(--bg);
+    display: grid; place-items: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 22px; line-height: 1;
+  }
+  .brand-text { line-height: 1.1; }
+  .brand-text .t { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
+  .brand-text .s { font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .top-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper); color: var(--ink);
+    border-radius: 10px; padding: 9px 14px;
+    font-size: 13px; font-weight: 500;
+    transition: transform .08s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:hover { background: #fff; border-color: var(--ink-2); }
+  .btn:active { transform: translateY(1px); }
+  .btn[disabled] { opacity: .5; cursor: not-allowed; }
+  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn.primary:hover { background: #000; }
+  .btn.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn.accent:hover { filter: brightness(1.05); }
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--ink-2); }
+  .btn.ghost:hover { background: var(--bg-2); }
+  .btn.danger { color: var(--danger); }
+  .btn.danger:hover { background: #fde7e3; border-color: var(--danger); }
+  .btn.icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
+  .btn.sm { padding: 6px 10px; font-size: 12px; }
+
+  .pane { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 880px) { .pane { grid-template-columns: 1fr; } }
+
+  .trip-list {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+    position: sticky; top: 24px;
+  }
+  .trip-list h3 {
+    margin: 0; padding: 14px 16px;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .trip-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; cursor: pointer;
+    border-bottom: 1px solid var(--line);
+    transition: background .12s ease; position: relative;
+  }
+  .trip-item:last-child { border-bottom: 0; }
+  .trip-item:hover { background: var(--bg-2); }
+  .trip-item.active { background: var(--accent-bg); }
+  .trip-item.active::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); }
+  .trip-item .ti-flag {
+    width: 28px; height: 28px; border-radius: 8px; flex: 0 0 28px;
+    display: grid; place-items: center; font-size: 14px;
+    background: var(--bg-2); color: var(--ink-2);
+    font-family: 'Fraunces', serif; font-weight: 600;
+  }
+  .trip-item .ti-body { min-width: 0; flex: 1; }
+  .trip-item .ti-title { font-weight: 600; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .trip-item .ti-meta { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .trip-list .add-row { padding: 12px 14px; border-top: 1px solid var(--line); background: var(--bg-2); }
+  .empty-state { padding: 32px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .detail {
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    overflow: hidden; min-height: 420px;
+  }
+  .detail-empty { padding: 80px 32px; text-align: center; color: var(--muted); }
+  .detail-empty .display { font-size: 28px; color: var(--ink); margin-bottom: 8px; }
+
+  .hero {
+    padding: 28px 32px 24px;
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(120% 100% at 100% 0%, var(--accent-bg) 0%, transparent 55%), var(--paper);
+  }
+  .hero-row { display: flex; gap: 16px; align-items: flex-start; justify-content: space-between; }
+  .hero h1 {
+    margin: 0; font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 38px; letter-spacing: -0.02em; line-height: 1.05;
+  }
+  .hero h1[contenteditable]:focus { outline: 2px dashed var(--accent); outline-offset: 4px; border-radius: 4px; }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; color: var(--ink-2); }
+  .meta-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.6); border: 1px solid var(--line);
+    padding: 5px 10px; border-radius: 999px; font-size: 12px;
+  }
+  .meta-chip svg { width: 12px; height: 12px; opacity: .7; }
+  .hero-actions { display: flex; gap: 6px; }
+
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); font-weight: 600;
+  }
+  .input, .textarea, .select {
+    background: #fff; border: 1px solid var(--line-strong);
+    border-radius: 9px; padding: 9px 12px; font-size: 14px;
+    color: var(--ink); width: 100%;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .input:focus, .textarea:focus, .select:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+  }
+  .textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+
+  .section { padding: 22px 32px; border-bottom: 1px solid var(--line); }
+  .section:last-child { border-bottom: 0; }
+  .section-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .section-head h2 {
+    margin: 0; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .toggle-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; border: 0; padding: 4px 8px;
+    border-radius: 8px; cursor: pointer; color: var(--ink);
+    font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600;
+    letter-spacing: -0.01em; margin: -4px -8px;
+  }
+  .toggle-btn:hover { background: var(--bg-2); }
+  .toggle-btn .chev {
+    width: 14px; height: 14px; transition: transform .15s ease; flex-shrink: 0;
+    color: var(--muted);
+  }
+  .toggle-btn.open .chev { transform: rotate(90deg); }
+  .day-head .toggle-btn { font-family: inherit; font-size: 14px; font-weight: 600; }
+  .day-head .toggle-btn .chev { width: 12px; height: 12px; }
+  .section-head .count { color: var(--muted); font-size: 13px; margin-left: 8px; font-weight: 400; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  /* Itinerary */
+  .day-card {
+    border: 1px solid var(--line); background: #fff;
+    border-radius: 12px; margin-bottom: 14px; overflow: hidden;
+  }
+  .day-head {
+    padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; border-bottom: 1px solid var(--line); background: var(--bg-2);
+  }
+  .day-head .day-title { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .day-num {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--ink); color: var(--bg);
+    display: grid; place-items: center; flex: 0 0 34px;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px;
+  }
+  .day-info .d-date { font-weight: 600; font-size: 14px; color: var(--ink); }
+  .day-info .d-label { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .day-actions { display: flex; gap: 4px; }
+  .timeline { padding: 6px 16px 14px; }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 18px 78px 1fr auto;
+    gap: 8px; align-items: start;
+    padding: 12px 0; border-top: 1px dashed var(--line);
+  }
+  .timeline-item:first-child { border-top: 0; }
+  .ti-time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; font-weight: 500; color: var(--accent-ink);
+    background: var(--accent-bg); border-radius: 7px;
+    padding: 5px 8px; text-align: center; line-height: 1.3;
+    align-self: start;
+  }
+  .ti-time .dur { display: block; font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 400; }
+  .ti-body { min-width: 0; }
+  .ti-title { font-weight: 600; font-size: 14px; color: var(--ink); }
+  .ti-place {
+    font-size: 12.5px; color: var(--muted); margin-top: 2px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .ti-place svg { width: 11px; height: 11px; }
+  .ti-place a { color: var(--accent-ink); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+  .ti-place a:hover { color: var(--accent); }
+  .ti-notes { font-size: 13px; color: var(--ink-2); margin-top: 4px; line-height: 1.45; white-space: pre-wrap; }
+  .ti-actions { display: flex; gap: 2px; }
+  .timeline-empty {
+    padding: 18px; text-align: center; color: var(--muted); font-size: 13px;
+    border: 1px dashed var(--line-strong); border-radius: 10px; margin-top: 8px;
+  }
+
+  /* Editing forms inside timeline */
+  .ti-edit {
+    display: grid; grid-template-columns: 18px 78px 1fr; gap: 8px;
+    padding: 12px 0; border-top: 1px dashed var(--line);
+  }
+  .ti-edit-form {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+  }
+  .ti-edit-form .span2 { grid-column: 1 / span 2; }
+  @media (max-width: 600px) {
+    .timeline-item { grid-template-columns: 60px 1fr; }
+    .ti-actions { grid-column: 1 / span 2; justify-content: flex-end; margin-top: 4px; }
+    .ti-edit { grid-template-columns: 60px 1fr; }
+  }
+
+  /* Places */
+  .place-tabs {
+    display: inline-flex; background: var(--bg-2); padding: 3px;
+    border-radius: 10px; gap: 2px; margin-bottom: 14px;
+    border: 1px solid var(--line); flex-wrap: wrap;
+  }
+  .place-tab {
+    border: 0; background: transparent; padding: 6px 12px;
+    border-radius: 8px; font-size: 12px; font-weight: 500;
+    color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px;
+  }
+  .place-tab.active { background: var(--paper); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  .place-tab .pill {
+    background: var(--bg); border-radius: 999px; padding: 1px 7px;
+    font-size: 11px; color: var(--muted); font-weight: 500;
+  }
+  .place-tab.active .pill { background: var(--bg-2); color: var(--ink-2); }
+
+  .place-list { display: flex; flex-direction: column; gap: 10px; }
+  .place {
+    border: 1px solid var(--line); background: #fff; border-radius: 12px;
+    padding: 12px 14px; display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    gap: 14px; align-items: start;
+    transition: border-color .15s ease, transform .08s ease;
+  }
+  .place:hover { border-color: var(--line-strong); }
+  .place .badge {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: grid; place-items: center; flex: 0 0 36px;
+  }
+  .place.food .badge { background: var(--accent-bg); color: var(--accent-ink); }
+  .place.attraction .badge { background: var(--leaf-bg); color: var(--leaf); }
+  .place.lodging .badge { background: #ece4f5; color: #5b3f8e; }
+  .place.transport .badge { background: var(--sky-bg); color: var(--sky); }
+  .place.other .badge { background: var(--bg-2); color: var(--ink-2); }
+  .place .badge svg { width: 18px; height: 18px; }
+
+  .place-thumb {
+    width: 76px; height: 76px; border-radius: 10px;
+    background: var(--bg-2); flex: 0 0 76px;
+    background-size: cover; background-position: center;
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    color: var(--muted);
+  }
+  .place-thumb svg { width: 22px; height: 22px; opacity: .55; }
+  .place-thumb.has-img { color: transparent; }
+
+  .place-body { min-width: 0; }
+  .place-name { font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 2px; word-wrap: break-word; }
+  .place-addr { font-size: 12.5px; color: var(--muted); margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+  .place-note { font-size: 13px; color: var(--ink-2); line-height: 1.5; white-space: pre-wrap; }
+  .place-actions { display: flex; gap: 4px; flex-shrink: 0; }
+  .map-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fff; border: 1px solid var(--line-strong);
+    color: var(--ink); padding: 6px 11px; border-radius: 8px;
+    font-size: 12px; font-weight: 500; text-decoration: none;
+    transition: all .15s ease;
+  }
+  .map-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .map-link svg { width: 12px; height: 12px; }
+
+  .place.editing { background: var(--bg-2); border-color: var(--line-strong); }
+  .place-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+  @media (max-width: 600px) {
+    .place { grid-template-columns: auto 1fr; grid-auto-flow: row; }
+    .place-thumb { grid-row: 1; grid-column: 2; width: 100%; height: 140px; }
+    .place-body { grid-column: 1 / span 2; }
+    .place-actions { grid-column: 1 / span 2; justify-content: flex-end; }
+    .place-edit-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Image upload */
+  /* ── Map picker dropdown ─────────────────────────────── */
+  .map-picker { position: relative; display: inline-flex; }
+  .map-picker-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 9px 5px 8px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink-2);
+    cursor: pointer; transition: background .12s, border-color .12s;
+    white-space: nowrap;
+  }
+  .map-picker-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .map-picker-btn:hover { background: #fff; border-color: var(--ink-2); color: var(--ink); }
+  .map-picker-caret {
+    width: 12px; height: 12px; opacity: .6; margin-left: 1px;
+  }
+  .map-picker-menu {
+    position: absolute; top: calc(100% + 5px); right: 0; z-index: 200;
+    background: var(--paper); border: 1px solid var(--line-strong);
+    border-radius: 10px; box-shadow: 0 4px 20px -4px rgba(31,27,22,.22);
+    min-width: 172px; overflow: hidden;
+  }
+  .map-picker-menu a {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 13px; font-size: 13px; font-weight: 500;
+    color: var(--ink); text-decoration: none;
+    transition: background .1s;
+  }
+  .map-picker-menu a:hover { background: var(--bg-2); }
+  .map-picker-menu a + a { border-top: 1px solid var(--line); }
+  .map-picker-menu .mp-icon {
+    width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+    display: grid; place-items: center; font-size: 13px;
+  }
+  .map-picker-menu .mp-icon svg { width: 13px; height: 13px; }
+  .mp-google .mp-icon { background: #e8f0fe; color: #1a73e8; }
+  .mp-amap   .mp-icon { background: #e6f7ec; color: #0fa958; }
+  .mp-sub { display: block; font-size: 10px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+  /* ─────────────────────────────────────────────────────── */
+
+  .img-uploader {
+    border: 1px dashed var(--line-strong);
+    background: #fff; border-radius: 10px;
+    padding: 10px; display: flex; gap: 10px; align-items: center;
+  }
+  .img-preview {
+    width: 64px; height: 64px; border-radius: 8px;
+    background: var(--bg-2); flex: 0 0 64px;
+    background-size: cover; background-position: center;
+    border: 1px solid var(--line);
+    display: grid; place-items: center;
+    color: var(--muted); font-size: 11px;
+  }
+  .img-uploader-actions { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .file-button {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line-strong); background: #fff;
+    border-radius: 8px; padding: 6px 10px; font-size: 12px;
+    color: var(--ink-2); cursor: pointer; align-self: flex-start;
+  }
+  .file-button:hover { background: var(--bg-2); }
+  .file-button input { display: none; }
+
+  .add-place-form {
+    background: var(--bg-2); border: 1px dashed var(--line-strong);
+    border-radius: 12px; padding: 14px;
+    display: flex; flex-direction: column; gap: 10px; margin-top: 12px;
+  }
+  .add-place-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 600px) { .add-place-row { grid-template-columns: 1fr; } }
+  .place-empty {
+    padding: 20px; text-align: center; color: var(--muted); font-size: 13px;
+    border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--bg-2);
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(20,16,10,0.45);
+    display: grid; place-items: center; z-index: 50;
+    animation: fadeIn .18s ease; padding: 20px;
+  }
+  .modal {
+    background: var(--paper); border-radius: 16px;
+    width: 100%; max-width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden;
+    animation: slideUp .22s ease;
+  }
+  .modal-head {
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .modal-head h3 { margin: 0; font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .modal-body { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+  .modal-foot {
+    padding: 14px 22px; border-top: 1px solid var(--line);
+    display: flex; justify-content: flex-end; gap: 8px; background: var(--bg-2);
+  }
+  @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .row { display: flex; align-items: center; gap: 8px; }
+  .between { justify-content: space-between; }
+  .muted { color: var(--muted); }
+  .pill {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    background: var(--bg-2); color: var(--ink-2); border: 1px solid var(--line);
+  }
+  .pill.accent { background: var(--accent-bg); color: var(--accent-ink); border-color: transparent; }
+  .pill.sky { background: var(--sky-bg); color: var(--sky); border-color: transparent; }
+  .inline-confirm {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #fde7e3; border: 1px solid var(--danger);
+    border-radius: 8px; padding: 4px 8px; font-size: 12px; color: var(--danger);
+  }
+
+  /* ── Search bar ─────────────────────────────────────────── */
+  #search-bar {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--paper); border: 1px solid var(--line-strong);
+    border-radius: 12px; padding: 10px 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    transition: var(--transition-theme);
+  }
+  #search-bar svg { width: 16px; height: 16px; color: var(--muted); flex-shrink: 0; }
+  #search-bar input {
+    flex: 1; border: none; background: transparent; font-size: 14px;
+    color: var(--ink); outline: none; font-family: inherit;
+  }
+  #search-bar input::placeholder { color: var(--muted); }
+  #search-clear {
+    border: none; background: none; cursor: pointer; color: var(--muted);
+    display: flex; align-items: center; padding: 2px;
+    border-radius: 4px;
+  }
+  #search-clear:hover { color: var(--ink); }
+  .search-count {
+    font-size: 11px; color: var(--muted); white-space: nowrap; font-weight: 500;
+  }
+  .search-result-match {
+    background: oklch(68% 0.16 48 / 0.18); color: var(--accent-ink);
+    border-radius: 2px; padding: 0 1px;
+  }
+  .search-section-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); font-weight: 600; padding: 8px 0 4px;
+    border-bottom: 1px solid var(--line); margin-bottom: 8px;
+  }
+
+  /* ── Dark mode toggle button ────────────────────────────── */
+  .theme-toggle {
+    width: 34px; height: 34px; border-radius: 10px; padding: 0;
+    border: 1px solid var(--line-strong); background: var(--paper);
+    color: var(--ink-2); display: grid; place-items: center; cursor: pointer;
+    transition: var(--transition-theme);
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--bg-2); color: var(--ink); }
+  .theme-toggle svg { width: 16px; height: 16px; }
+
+  /* ── Activity photo thumbnail ───────────────────────────── */
+  .ti-photo {
+    width: 52px; height: 52px; border-radius: 8px;
+    background: var(--bg-2); background-size: cover; background-position: center;
+    border: 1px solid var(--line); flex-shrink: 0; cursor: zoom-in;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); overflow: hidden; align-self: start;
+  }
+  .ti-photo svg { width: 16px; height: 16px; opacity: .5; }
+  .ti-photo-upload {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--muted); cursor: pointer;
+    border: 1px dashed var(--line-strong); border-radius: 6px;
+    padding: 4px 8px; margin-top: 4px;
+    transition: border-color .12s, color .12s;
+  }
+  .ti-photo-upload:hover { color: var(--accent-ink); border-color: var(--accent); }
+  .ti-photo-upload svg { width: 11px; height: 11px; }
+  .ti-photo-upload input { display: none; }
+
+  /* ── Activity photo in ItemEdit form ───────────────────── */
+  .item-photo-row {
+    grid-column: 1 / span 2;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .item-photo-preview {
+    width: 52px; height: 52px; border-radius: 8px; flex-shrink: 0;
+    background: var(--bg-2); background-size: cover; background-position: center;
+    border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+  }
+  .item-photo-preview svg { width: 18px; height: 18px; opacity: .4; }
+
+  /* Update timeline grid to fit photo column */
+  .timeline-item { grid-template-columns: 18px 78px 1fr auto; }
+  /* when item has photo, body column gets image before text */
+  .ti-body-inner { min-width: 0; }
+  .ti-body-with-photo { display: flex; gap: 10px; align-items: flex-start; }
+  .img-lightbox {
+    position: fixed; inset: 0; background: rgba(15,12,8,0.85);
+    display: grid; place-items: center; z-index: 60; cursor: zoom-out;
+    padding: 24px;
+  }
+  .img-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+
+  /* ── Undo Toast ─────────────────────────────────────────── */
+  .toast-stack {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 100; display: flex; flex-direction: column; gap: 8px;
+    align-items: center; pointer-events: none;
+  }
+  .toast {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--ink); color: var(--bg);
+    border-radius: 12px; padding: 12px 16px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    pointer-events: all; position: relative; overflow: hidden;
+    animation: toastIn .2s ease;
+  }
+  @keyframes toastIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  .toast-progress {
+    position: absolute; bottom: 0; left: 0; height: 3px;
+    background: var(--accent); border-radius: 0 0 12px 12px;
+    animation: toastBar var(--dur, 5s) linear forwards;
+  }
+  @keyframes toastBar { from { width:100%; } to { width:0%; } }
+  .toast-undo {
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 7px;
+    padding: 5px 12px; font-size: 12px; font-weight: 600;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .toast-undo:hover { filter: brightness(1.1); }
+
+  /* ── Drag handles ───────────────────────────────────────── */
+  .drag-handle {
+    cursor: grab; color: var(--muted); display: flex; align-items: center;
+    padding: 4px 2px; flex-shrink: 0; opacity: 0;
+    transition: opacity .12s; touch-action: none;
+  }
+  .drag-handle:active { cursor: grabbing; }
+  .drag-handle svg { width: 14px; height: 14px; }
+  .day-card:hover .drag-handle,
+  .timeline-item:hover .drag-handle { opacity: 1; }
+  .day-card.drag-over { outline: 2px dashed var(--accent); outline-offset: 2px; }
+  .timeline-item.drag-over { border-top: 2px solid var(--accent); }
+  .day-card.dragging { opacity: .4; }
+  .timeline-item.dragging { opacity: .4; }
+
+  /* ── Print / PDF styles ─────────────────────────────────── */
+  @media print {
+    @page { margin: 18mm 16mm; size: A4; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body > * { display: none !important; }
+    #print-frame { display: block !important; }
+    body { background: #fff !important; }
+  }
+  #print-frame {
+    display: none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 13px; color: #1f1b16; line-height: 1.5;
+  }
+  #print-frame h1 { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.02em; }
+  #print-frame h2 { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; margin: 0 0 10px; letter-spacing: -0.01em; }
+  #print-frame .pf-meta { font-size: 12px; color: #6b6056; display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 32px; }
+  #print-frame .pf-section-label {
+    font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase;
+    font-weight: 700; color: #8a7f70; border-bottom: 1px solid #e3d9c6;
+    padding-bottom: 5px; margin: 28px 0 14px;
+  }
+  #print-frame .pf-day-head {
+    display: flex; align-items: center; gap: 10px;
+    background: #f0ebe0; border-radius: 8px;
+    padding: 9px 14px; margin-bottom: 8px;
+  }
+  #print-frame .pf-day-num {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: #1f1b16; color: #f6f1e8;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px; flex-shrink: 0;
+  }
+  #print-frame .pf-day-title { font-weight: 600; font-size: 13px; }
+  #print-frame .pf-day-label { font-size: 11px; color: #8a7f70; }
+  #print-frame .pf-item {
+    display: grid; grid-template-columns: 64px 1fr;
+    gap: 10px; padding: 7px 0 7px 14px;
+    border-left: 2px solid #e3d9c6; margin-bottom: 4px;
+  }
+  #print-frame .pf-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #7a5c3a; font-weight: 500; padding-top: 1px; }
+  #print-frame .pf-item-title { font-weight: 600; font-size: 13px; }
+  #print-frame .pf-item-loc { font-size: 11px; color: #8a7f70; margin-top: 2px; }
+  #print-frame .pf-item-notes { font-size: 12px; color: #4a4239; margin-top: 3px; white-space: pre-wrap; }
+  #print-frame .pf-place-row {
+    display: grid; grid-template-columns: 22px 1fr;
+    gap: 8px; padding: 7px 0; border-bottom: 1px solid #f0ebe0; align-items: start;
+  }
+  #print-frame .pf-place-row:last-child { border-bottom: 0; }
+  #print-frame .pf-badge {
+    width: 18px; height: 18px; border-radius: 4px; background: #f0ebe0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #8a7f70; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  #print-frame .pf-place-name { font-weight: 600; font-size: 12.5px; }
+  #print-frame .pf-place-addr { font-size: 11px; color: #8a7f70; }
+  #print-frame .pf-place-note { font-size: 11px; color: #4a4239; margin-top: 2px; }
+  #print-frame .pf-footer {
+    margin-top: 40px; padding-top: 12px; border-top: 1px solid #e3d9c6;
+    font-size: 10px; color: #b0a898; text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="print-frame"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" data-presets="env,react">
+  const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+  /* ---------- Storage ---------- */
+  const STORAGE_KEY = 'travelplan.v5';
+  const uid = () => Math.random().toString(36).slice(2, 10);
+
+  /* ── Toast / Undo system ─────────────────────────────────
+     Components call pushToast({ message, onUndo }) and get back
+     a dismiss function. The App renders <ToastStack toasts={toasts} />.
+  ──────────────────────────────────────────────────────── */
+  let _setToasts = null;
+  const TOAST_MS = 5000;
+
+  function pushToast({ message, onUndo }) {
+    const id = uid();
+    const timer = setTimeout(() => {
+      _setToasts && _setToasts(ts => ts.filter(t => t.id !== id));
+    }, TOAST_MS);
+    const dismiss = (runUndo = false) => {
+      clearTimeout(timer);
+      if (runUndo && onUndo) onUndo();
+      _setToasts && _setToasts(ts => ts.filter(t => t.id !== id));
+    };
+    _setToasts && _setToasts(ts => [...ts, { id, message, dismiss, hasUndo: !!onUndo }]);
+    return dismiss;
+  }
+
+  function ToastStack() {
+    const [toasts, setToasts] = useState([]);
+    useEffect(() => { _setToasts = setToasts; return () => { _setToasts = null; }; }, []);
+    if (!toasts.length) return null;
+    return (
+      <div className="toast-stack">
+        {toasts.map(t => (
+          <div key={t.id} className="toast">
+            <span>{t.message}</span>
+            {t.hasUndo && (
+              <button className="toast-undo" onClick={() => t.dismiss(true)}>Undo</button>
+            )}
+            <div className="toast-progress" style={{ '--dur': TOAST_MS + 'ms' }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  /* ── PDF / Print export ──────────────────────────────────
+     Builds static HTML into #print-frame, calls window.print(),
+     then clears the frame. Works with the @media print CSS above.
+  ──────────────────────────────────────────────────────── */
+  const KIND_ABBR = { food:'🍴', attraction:'📷', lodging:'🛏', transport:'🚆', other:'📌' };
+
+  function exportTripPDF(trip) {
+    const frame = document.getElementById('print-frame');
+    if (!frame) return;
+
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const fmtD = (iso) => { if (!iso) return ''; const d = new Date(iso); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
+    const esc = (s) => (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    const dur = trip.startDate && trip.endDate
+      ? Math.round((new Date(trip.endDate) - new Date(trip.startDate)) / 86400000) + 1 : null;
+
+    const itinHtml = trip.itinerary.map((day, i) => `
+      <div class="pf-day-head">
+        <div class="pf-day-num">${i + 1}</div>
+        <div>
+          <div class="pf-day-title">${esc(fmtD(day.date))}</div>
+          ${day.label ? `<div class="pf-day-label">${esc(day.label)}</div>` : ''}
+        </div>
+      </div>
+      ${day.items.map(it => `
+        <div class="pf-item">
+          <div class="pf-time">${esc(it.time || '—')}${it.duration ? `<br><span style="font-size:10px;color:#b0a898">${esc(it.duration)}</span>` : ''}</div>
+          <div>
+            <div class="pf-item-title">${esc(it.title || '(untitled)')}</div>
+            ${it.location ? `<div class="pf-item-loc">📍 ${esc(it.location)}</div>` : ''}
+            ${it.notes ? `<div class="pf-item-notes">${esc(it.notes)}</div>` : ''}
+          </div>
+        </div>`).join('')}
+      ${day.notes ? `<div style="font-size:11px;color:#8a7f70;margin:6px 0 0 14px;border-left:2px solid #f0c89e;padding-left:10px">⏰ ${esc(day.notes)}</div>` : ''}
+    `).join('<div style="margin-bottom:20px"></div>');
+
+    const placeGroups = {};
+    trip.places.forEach(p => {
+      const k = p.kind || 'other';
+      if (!placeGroups[k]) placeGroups[k] = [];
+      placeGroups[k].push(p);
+    });
+    const placesHtml = Object.entries(placeGroups).map(([kind, places]) => `
+      <div style="margin-bottom:16px">
+        <div style="font-size:11px;font-weight:600;color:#8a7f70;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">
+          ${KIND_ABBR[kind] || '📌'} ${kind.charAt(0).toUpperCase()+kind.slice(1)}
+        </div>
+        ${places.map(p => `
+          <div class="pf-place-row">
+            <div class="pf-badge">${(KIND_ABBR[p.kind]||'📌')}</div>
+            <div>
+              <div class="pf-place-name">${esc(p.name)}${p.city ? ` <span style="font-size:10px;color:#b0a898">${esc(p.city)}</span>` : ''}</div>
+              ${p.address ? `<div class="pf-place-addr">📍 ${esc(p.address)}</div>` : ''}
+              ${p.notes ? `<div class="pf-place-note">${esc(p.notes)}</div>` : ''}
+            </div>
+          </div>`).join('')}
+      </div>`).join('');
+
+    frame.innerHTML = `
+      <h1>${esc(trip.title)}</h1>
+      <div class="pf-meta">
+        ${trip.origin ? `<span>✈️ From ${esc(trip.origin)}</span>` : ''}
+        ${trip.destination ? `<span>📍 ${esc(trip.destination)}</span>` : ''}
+        ${trip.startDate ? `<span>📅 ${fmtD(trip.startDate)}${trip.endDate ? ` – ${fmtD(trip.endDate)}` : ''}${dur ? ` · ${dur} days` : ''}</span>` : ''}
+        ${trip.travelers ? `<span>👥 ${trip.travelers} traveler${trip.travelers > 1 ? 's' : ''}</span>` : ''}
+        ${trip.budget ? `<span>💰 ${esc(trip.currency)} ${Number(trip.budget).toLocaleString()}</span>` : ''}
+      </div>
+      ${trip.notes ? `<div style="background:#f6f1e8;border-radius:8px;padding:10px 14px;font-size:12px;color:#4a4239;margin-bottom:16px;white-space:pre-wrap">${esc(trip.notes)}</div>` : ''}
+
+      ${trip.itinerary.length ? `<div class="pf-section-label">Itinerary · ${trip.itinerary.length} days</div>${itinHtml}` : ''}
+      ${trip.places.length ? `<div class="pf-section-label">Saved places · ${trip.places.length} total</div>${placesHtml}` : ''}
+
+      <div class="pf-footer">Travel Plan · Printed ${new Date().toLocaleDateString()} · For offline use</div>
+    `;
+
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => { frame.innerHTML = ''; }, 1000);
+    }, 80);
+  }
+
+  const seedTrips = () => ([
+    {
+      id: uid(),
+      title: 'Hong Kong → Shenzhen → Guangzhou',
+      destination: 'Hong Kong · Shenzhen · Guangzhou',
+      origin: 'Bangkok, Thailand',
+      startDate: '2026-05-29',
+      endDate: '2026-06-05',
+      travelers: 1,
+      budget: '14000',
+      currency: 'HKD',
+      notes: 'Bring Octopus card for HK MTR; download Alipay + WeChat Pay before crossing into Shenzhen. Apply for 144-hr transit visa or Greater Bay Area visa in advance. Power adapter: HK uses UK plug, mainland uses Type A/I.',
+      itinerary: [
+        {
+          id: uid(), date: '2026-05-29', label: 'Arrive Hong Kong',
+          items: [
+            { id: uid(), time: '14:30', duration: '4h', title: 'Flight BKK → HKG', location: 'Suvarnabhumi → Hong Kong Intl Airport', notes: 'Thai Airways TG606. Check in 3hrs early. Window seat for HK skyline approach.' },
+            { id: uid(), time: '19:00', duration: '1h', title: 'Airport Express to Kowloon', location: 'AsiaWorld-Expo → Kowloon Station', notes: 'HK$115 one-way. In-town check-in available at Kowloon Station.' },
+            { id: uid(), time: '20:30', duration: '1h', title: 'Hotel check-in', location: 'Tsim Sha Tsui', notes: '' },
+            { id: uid(), time: '21:30', duration: '1h', title: 'Symphony of Lights + late dinner', location: 'Avenue of Stars, TST', notes: 'Show starts 20:00 daily — catch the tail. Wonton noodles after at Mak\'s.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-05-30', label: 'Temple day · HK Island',
+          items: [
+            { id: uid(), time: '08:00', duration: '30m', title: 'Dim sum breakfast', location: 'Tim Ho Wan, Sham Shui Po', notes: 'Get the BBQ pork buns. Arrive before 8:30 to skip the line.' },
+            { id: uid(), time: '09:30', duration: '2h', title: 'Wong Tai Sin Temple', location: 'Wong Tai Sin, Kowloon', notes: '"Make every wish come true" — bring HK$10 coins for fortune sticks (kau cim).' },
+            { id: uid(), time: '12:00', duration: '2h', title: 'Chi Lin Nunnery + Nan Lian Garden', location: 'Diamond Hill', notes: 'Tang dynasty wooden architecture. Tea house inside Nan Lian — try the noodles in lotus broth.' },
+            { id: uid(), time: '15:00', duration: '2h', title: 'Man Mo Temple', location: 'Sheung Wan, HK Island', notes: 'Hanging incense coils. Combine with stroll on Hollywood Rd / antique shops.' },
+            { id: uid(), time: '18:00', duration: '2h', title: 'Victoria Peak by tram', location: 'Peak Tram, Central', notes: 'Reserve tickets online (HK$108). Best at sunset — arrive 17:30.' },
+            { id: uid(), time: '21:00', duration: '1h30', title: 'Dinner — Yat Lok roast goose', location: 'Stanley St, Central', notes: 'Michelin Bib. Order the leg, not the breast.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-05-31', label: 'Lantau · Big Buddha',
+          items: [
+            { id: uid(), time: '09:00', duration: '1h', title: 'Ngong Ping 360 cable car', location: 'Tung Chung MTR', notes: 'Crystal Cabin upgrade worth it. Buy combo pass.' },
+            { id: uid(), time: '11:00', duration: '2h', title: 'Tian Tan Buddha + Po Lin Monastery', location: 'Ngong Ping, Lantau', notes: '268 steps. Vegetarian lunch ticket at the monastery.' },
+            { id: uid(), time: '15:00', duration: '2h', title: 'Tai O fishing village', location: 'Tai O, Lantau', notes: 'Stilt houses, shrimp paste, dolphin-spotting boats (HK$30).' },
+            { id: uid(), time: '20:00', duration: '2h', title: 'Mong Kok night market', location: 'Ladies Market, Tung Choi St', notes: 'Last HK night — pack light for Shenzhen tomorrow.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-06-01', label: 'HK → Shenzhen',
+          items: [
+            { id: uid(), time: '10:00', duration: '1h', title: 'Hotel checkout + MTR to border', location: 'Lo Wu / Lok Ma Chau', notes: 'East Rail Line to Lo Wu. Have passport + visa ready. Crossing takes ~30 min.' },
+            { id: uid(), time: '12:30', duration: '30m', title: 'Metro to Futian', location: 'Luohu Port → Line 1', notes: 'Buy Shenzhen Tong card or use Alipay QR. Cash rarely accepted.' },
+            { id: uid(), time: '14:00', duration: '1h', title: 'Hotel check-in', location: 'Futian / Coco Park area', notes: '' },
+            { id: uid(), time: '15:30', duration: '3h', title: 'Huaqiangbei electronics market', location: 'Huaqiangbei, Futian', notes: 'World\'s largest electronics market. SEG Plaza. Bring RMB cash for small stalls.' },
+            { id: uid(), time: '20:00', duration: '2h', title: 'Dinner — Cantonese hotpot', location: 'Coco Park', notes: '' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-06-02', label: 'Shenzhen → Guangzhou',
+          items: [
+            { id: uid(), time: '09:00', duration: '40m', title: 'High-speed rail to Guangzhou South', location: 'Shenzhen North → Guangzhou South', notes: 'G-train, ~¥75. Book on Trip.com or 12306. Bring printed ticket + passport.' },
+            { id: uid(), time: '11:00', duration: '1h', title: 'Metro to Tianhe + check-in', location: 'Tianhe district', notes: '' },
+            { id: uid(), time: '14:00', duration: '2h', title: 'Chen Clan Ancestral Hall', location: 'Liwan District', notes: 'Qing-dynasty woodwork, Lingnan architecture museum.' },
+            { id: uid(), time: '17:00', duration: '2h', title: 'Shamian Island stroll', location: 'Liwan', notes: 'Colonial-era European architecture along the Pearl River. Coffee at Starbucks Reserve.' },
+            { id: uid(), time: '19:30', duration: '2h', title: 'Dim sum dinner — Guangzhou Restaurant', location: 'Wenchang Branch', notes: 'Founded 1935. Char siu, shrimp dumplings, lotus paste buns.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-06-03', label: 'Guangzhou — culture day',
+          items: [
+            { id: uid(), time: '09:00', duration: '2h', title: 'Six Banyan Temple', location: 'Yuexiu', notes: 'Flowery Pagoda — 1000-year-old Buddhist site.' },
+            { id: uid(), time: '12:00', duration: '2h', title: 'Yuexiu Park + Five-Ram Statue', location: 'Yuexiu', notes: 'Symbol of Guangzhou. Climb Zhenhai Tower (city museum).' },
+            { id: uid(), time: '15:00', duration: '3h', title: 'Canton Tower observation', location: 'Haizhu', notes: 'Bubble Tram at top — book online. Sunset slot is ¥298.' },
+            { id: uid(), time: '20:00', duration: '2h', title: 'Pearl River night cruise', location: 'Tianzi Pier', notes: '90-min loop. Skyline lights up at 19:45.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-06-04', label: 'Buffer / shopping',
+          items: [
+            { id: uid(), time: '10:00', duration: '3h', title: 'Beijing Road pedestrian street', location: 'Yuexiu', notes: 'Excavated Song-dynasty road under glass. Tea, silk, snacks.' },
+            { id: uid(), time: '14:00', duration: '2h', title: 'Tea at Lingnan Impression Park', location: 'University Town', notes: 'Optional — skip if tired.' },
+          ]
+        },
+        {
+          id: uid(), date: '2026-06-05', label: 'Return to Bangkok',
+          items: [
+            { id: uid(), time: '09:00', duration: '1h', title: 'Checkout + metro to airport', location: 'Guangzhou Baiyun (CAN)', notes: '' },
+            { id: uid(), time: '13:30', duration: '3h30', title: 'Flight CAN → BKK', location: 'China Southern CZ8311', notes: '' },
+          ]
+        },
+      ],
+      places: [
+        { id: uid(), kind: 'attraction', city: 'Hong Kong', name: 'Wong Tai Sin Temple', address: '2 Chuk Yuen Village, Wong Tai Sin, Hong Kong', notes: 'Famous Taoist temple. Best in morning. Free entry.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Hong Kong', name: 'Man Mo Temple', address: '124-126 Hollywood Rd, Sheung Wan, Hong Kong', notes: 'Iconic hanging incense coils, dedicated to gods of literature & war.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Hong Kong', name: 'Tian Tan Buddha (Big Buddha)', address: 'Ngong Ping, Lantau Island, Hong Kong', notes: '34m bronze statue. 268 steps up.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Hong Kong', name: 'Chi Lin Nunnery', address: '5 Chi Lin Dr, Diamond Hill, Hong Kong', notes: 'Tang-style wooden temple complex.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Hong Kong', name: 'Victoria Peak', address: 'The Peak, Hong Kong Island', notes: '', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Guangzhou', name: 'Chen Clan Ancestral Hall', address: '34 Enlong Lǐ, Liwan, Guangzhou', notes: 'Lingnan folk arts museum.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Guangzhou', name: 'Canton Tower', address: '222 Yuejiang W Rd, Haizhu, Guangzhou', notes: '600m observation tower.', image: '' },
+        { id: uid(), kind: 'attraction', city: 'Guangzhou', name: 'Shamian Island', address: 'Shamian, Liwan, Guangzhou', notes: 'European colonial quarter.', image: '' },
+        { id: uid(), kind: 'food', city: 'Hong Kong', name: 'Tim Ho Wan (Sham Shui Po)', address: '9-11 Fuk Wing St, Sham Shui Po, Hong Kong', notes: 'Michelin-starred dim sum. BBQ pork buns are essential.', image: '' },
+        { id: uid(), kind: 'food', city: 'Hong Kong', name: 'Yat Lok Roast Goose', address: '34-38 Stanley St, Central, Hong Kong', notes: '', image: '' },
+        { id: uid(), kind: 'food', city: 'Hong Kong', name: "Mak's Noodle", address: '77 Wellington St, Central, Hong Kong', notes: 'Wonton noodles, classic.', image: '' },
+        { id: uid(), kind: 'food', city: 'Guangzhou', name: 'Guangzhou Restaurant (Wenchang Branch)', address: '2 Wenchang S Rd, Liwan, Guangzhou', notes: 'Founded 1935.', image: '' },
+        { id: uid(), kind: 'lodging', city: 'Hong Kong', name: 'Hotel — Tsim Sha Tsui (HK)', address: 'Tsim Sha Tsui, Kowloon, Hong Kong', notes: 'May 29–31 (3 nights)', image: '' },
+        { id: uid(), kind: 'lodging', city: 'Shenzhen', name: 'Hotel — Futian (Shenzhen)', address: 'Coco Park, Futian, Shenzhen', notes: 'Jun 1 (1 night)', image: '' },
+        { id: uid(), kind: 'lodging', city: 'Guangzhou', name: 'Hotel — Tianhe (Guangzhou)', address: 'Tianhe District, Guangzhou', notes: 'Jun 2–4 (3 nights)', image: '' },
+        { id: uid(), kind: 'transport', city: 'Shenzhen', name: 'Lo Wu Border Crossing', address: 'Lo Wu Control Point, HK / Luohu, Shenzhen', notes: 'East Rail Line terminus. Have passport + China visa ready.', image: '' },
+        { id: uid(), kind: 'transport', city: 'Shenzhen', name: 'Shenzhen North Railway Station', address: 'Min Zhi, Longhua, Shenzhen', notes: 'High-speed rail to Guangzhou.', image: '' },
+      ],
+    },
+  ]);
+
+  const loadTrips = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return seedTrips();
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length === 0) return seedTrips();
+      return parsed.map(t => ({ itinerary: [], places: [], origin: '', ...t }));
+    } catch { return seedTrips(); }
+  };
+
+  /* ---------- Helpers ---------- */
+  const pad = (n) => String(n).padStart(2, '0');
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const fmtDMY = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  };
+  const fmtDateRange = (a, b) => {
+    if (!a && !b) return 'Dates TBD';
+    if (a && b) return `${fmtDMY(a)} – ${fmtDMY(b)}`;
+    return fmtDMY(a || b);
+  };
+  const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const fmtDayHeader = (iso) => {
+    if (!iso) return 'No date';
+    const d = new Date(iso);
+    return `${WEEKDAYS[d.getDay()]}, ${fmtDMY(iso)}`;
+  };
+  const tripDuration = (a, b) => {
+    if (!a || !b) return null;
+    const ms = new Date(b) - new Date(a);
+    const d = Math.round(ms / 86400000) + 1;
+    return d > 0 ? d : null;
+  };
+  const initialOf = (s) => (s || '?').trim().charAt(0).toUpperCase() || '?';
+  const mapsUrl = (placeOrItem) => {
+    const q = [placeOrItem.name || placeOrItem.title, placeOrItem.address || placeOrItem.location].filter(Boolean).join(', ');
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+  };
+  const amapUrl = (placeOrItem) => {
+    const name = encodeURIComponent(placeOrItem.name || placeOrItem.title || '');
+    const addr = encodeURIComponent(placeOrItem.address || placeOrItem.location || '');
+    // Use Amap web search — works on both desktop and mobile (opens app via URI on mobile)
+    return `https://uri.amap.com/search?keyword=${addr || name}&name=${name}&src=travel-plan&callnative=1`;
+  };
+
+  const fileToDataURL = (file, maxDim = 1400) => new Promise((resolve, reject) => {
+    if (!file) return resolve('');
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          const r = Math.min(maxDim / width, maxDim / height);
+          width = Math.round(width * r); height = Math.round(height * r);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ---------- Icons ---------- */
+  const Icon = ({ name, ...rest }) => {
+    const paths = {
+      plus: <path d="M12 5v14M5 12h14" />,
+      trash: <><path d="M3 6h18" /><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" /></>,
+      edit: <><path d="M12 20h9" /><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4z" /></>,
+      check: <path d="M5 12l5 5L20 7" />,
+      x: <><path d="M18 6L6 18" /><path d="M6 6l18 18" /></>,
+      map: <><path d="M9 2L3 5v17l6-3 6 3 6-3V2l-6 3z" /><path d="M9 2v17M15 5v17" /></>,
+      pin: <><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" /><circle cx="12" cy="10" r="3" /></>,
+      calendar: <><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></>,
+      users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
+      wallet: <><path d="M20 12V7H5a2 2 0 0 1 0-4h13v4" /><path d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path d="M18 12a2 2 0 0 0 0 4h4v-4z" /></>,
+      fork: <><path d="M3 2v6c0 1.5 2 3 4 3M11 2v6c0 1.5-2 3-4 3M7 2v18M14 2c-2 0-3 4-3 6 0 1.5 2 2 3 2v10" /></>,
+      camera: <><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" /></>,
+      bed: <><path d="M2 20v-8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8" /><path d="M2 16h20M6 10V6h12v4" /></>,
+      sparkle: <path d="M12 2l2 7 7 2-7 2-2 7-2-7-7-2 7-2z" />,
+      external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="M15 3h6v6M10 14L21 3" /></>,
+      compass: <><circle cx="12" cy="12" r="10" /><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36z" /></>,
+      download: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M7 10l5 5 5-5M12 15V3" /></>,
+      clock: <><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></>,
+      train: <><rect x="4" y="3" width="16" height="16" rx="2" /><path d="M4 11h16M8 19l-2 3M16 19l2 3M9 7h6" /><circle cx="9" cy="15" r="1" /><circle cx="15" cy="15" r="1" /></>,
+      route: <><circle cx="6" cy="19" r="3" /><circle cx="18" cy="5" r="3" /><path d="M6 16V8a4 4 0 0 1 8 0v8a4 4 0 0 0 4 4" /></>,
+      image: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" /><path d="M21 15l-5-5L5 21" /></>,
+      upload: <><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M17 8l-5-5-5 5M12 3v12" /></>,
+      grip: <><circle cx="9" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1" fill="currentColor" stroke="none"/></>,
+      pdf: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15h6M9 11h2"/></>,
+      search: <><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></>,
+      moon: <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>,
+      sun: <><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></>,
+    };
+    return (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+           strokeLinecap="round" strokeLinejoin="round" {...rest}>
+        {paths[name]}
+      </svg>
+    );
+  };
+
+  const KIND_META = {
+    food:       { label: 'Food', icon: 'fork',    plural: 'Food spots' },
+    attraction: { label: 'Sights', icon: 'camera', plural: 'Tourist attractions' },
+    lodging:    { label: 'Stay',  icon: 'bed',     plural: 'Lodging' },
+    transport:  { label: 'Travel', icon: 'train',  plural: 'Transport' },
+    other:      { label: 'Other', icon: 'pin',     plural: 'Other links' },
+  };
+
+  /* ---------- App ---------- */
+  function App() {
+    const [trips, setTrips] = useState(loadTrips);
+    const [selectedId, setSelectedId] = useState(() => loadTrips()[0]?.id || null);
+    const [modal, setModal] = useState(null);
+    const [lightbox, setLightbox] = useState(null);
+    const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
+
+    /* Theme */
+    useEffect(() => {
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }, [dark]);
+
+    useEffect(() => {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(trips)); }
+      catch (e) { console.warn('Storage full — image too large?', e); }
+    }, [trips]);
+
+    const selected = trips.find(t => t.id === selectedId) || null;
+
+    const updateTrip = (id, patch) => setTrips(ts => ts.map(t => t.id === id ? { ...t, ...patch } : t));
+
+    /* Soft-delete trip with undo */
+    const deleteTrip = (id) => {
+      const snapshot = trips.find(t => t.id === id);
+      const prevSelected = selectedId;
+      setTrips(ts => ts.filter(t => t.id !== id));
+      if (selectedId === id) {
+        const remaining = trips.filter(t => t.id !== id);
+        setSelectedId(remaining[0]?.id || null);
+      }
+      pushToast({
+        message: `Trip "${snapshot?.title || 'Untitled'}" deleted`,
+        onUndo: () => {
+          setTrips(ts => {
+            const idx = ts.findIndex(t => t.id > id);
+            const copy = [...ts];
+            copy.splice(idx === -1 ? copy.length : idx, 0, snapshot);
+            return copy;
+          });
+          setSelectedId(prevSelected);
+        },
+      });
+    };
+
+    const createTrip = (data) => {
+      const trip = {
+        id: uid(), title: data.title || 'Untitled trip',
+        destination: data.destination || '', origin: data.origin || '',
+        startDate: data.startDate || '', endDate: data.endDate || '',
+        travelers: data.travelers || 1, budget: '', currency: 'HKD',
+        notes: '', itinerary: [], places: [],
+      };
+      setTrips(ts => [trip, ...ts]);
+      setSelectedId(trip.id);
+    };
+
+    /* Itinerary */
+    const addDay = (tripId, date) => {
+      const day = { id: uid(), date: date || '', label: '', items: [] };
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: [...t.itinerary, day].sort((a, b) => (a.date || '').localeCompare(b.date || ''))
+      } : t));
+    };
+    const updateDay = (tripId, dayId, patch) => {
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: t.itinerary.map(d => d.id === dayId ? { ...d, ...patch } : d)
+                                    .sort((a, b) => (a.date || '').localeCompare(b.date || ''))
+      } : t));
+    };
+
+    /* Soft-delete day with undo */
+    const deleteDay = (tripId, dayId) => {
+      const trip = trips.find(t => t.id === tripId);
+      const snapshot = trip?.itinerary.find(d => d.id === dayId);
+      const snapIdx = trip?.itinerary.findIndex(d => d.id === dayId) ?? -1;
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: t.itinerary.filter(d => d.id !== dayId)
+      } : t));
+      pushToast({
+        message: `Day "${snapshot?.label || fmtDayHeader(snapshot?.date) || 'Day'}" deleted`,
+        onUndo: () => setTrips(ts => ts.map(t => t.id === tripId ? {
+          ...t, itinerary: (() => {
+            const copy = [...t.itinerary];
+            copy.splice(snapIdx === -1 ? copy.length : snapIdx, 0, snapshot);
+            return copy;
+          })()
+        } : t)),
+      });
+    };
+
+    /* Drag-reorder days */
+    const reorderDays = (tripId, fromId, toId) => {
+      setTrips(ts => ts.map(t => {
+        if (t.id !== tripId) return t;
+        const arr = [...t.itinerary];
+        const from = arr.findIndex(d => d.id === fromId);
+        const to   = arr.findIndex(d => d.id === toId);
+        if (from === -1 || to === -1 || from === to) return t;
+        const [item] = arr.splice(from, 1);
+        arr.splice(to, 0, item);
+        return { ...t, itinerary: arr };
+      }));
+    };
+
+    const addItem = (tripId, dayId, item) => {
+      const newItem = { id: uid(), time: '', duration: '', title: '', location: '', notes: '', ...item };
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: t.itinerary.map(d => d.id === dayId ? {
+          ...d, items: [...d.items, newItem].sort((a, b) => (a.time || '').localeCompare(b.time || ''))
+        } : d)
+      } : t));
+    };
+    const updateItem = (tripId, dayId, itemId, patch) => {
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: t.itinerary.map(d => d.id === dayId ? {
+          ...d, items: d.items.map(it => it.id === itemId ? { ...it, ...patch } : it)
+                              .sort((a, b) => (a.time || '').localeCompare(b.time || ''))
+        } : d)
+      } : t));
+    };
+
+    /* Soft-delete item with undo */
+    const deleteItem = (tripId, dayId, itemId) => {
+      const day = trips.find(t => t.id === tripId)?.itinerary.find(d => d.id === dayId);
+      const snapshot = day?.items.find(it => it.id === itemId);
+      const snapIdx  = day?.items.findIndex(it => it.id === itemId) ?? -1;
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, itinerary: t.itinerary.map(d => d.id === dayId ? {
+          ...d, items: d.items.filter(it => it.id !== itemId)
+        } : d)
+      } : t));
+      pushToast({
+        message: `"${snapshot?.title || 'Activity'}" deleted`,
+        onUndo: () => setTrips(ts => ts.map(t => t.id === tripId ? {
+          ...t, itinerary: t.itinerary.map(d => d.id === dayId ? {
+            ...d, items: (() => {
+              const copy = [...d.items];
+              copy.splice(snapIdx === -1 ? copy.length : snapIdx, 0, snapshot);
+              return copy.sort((a,b) => (a.time||'').localeCompare(b.time||''));
+            })()
+          } : d)
+        } : t)),
+      });
+    };
+
+    /* Drag-reorder items within a day */
+    const reorderItems = (tripId, dayId, fromId, toId) => {
+      setTrips(ts => ts.map(t => {
+        if (t.id !== tripId) return t;
+        return {
+          ...t, itinerary: t.itinerary.map(d => {
+            if (d.id !== dayId) return d;
+            const arr = [...d.items];
+            const from = arr.findIndex(it => it.id === fromId);
+            const to   = arr.findIndex(it => it.id === toId);
+            if (from === -1 || to === -1 || from === to) return d;
+            const [item] = arr.splice(from, 1);
+            arr.splice(to, 0, item);
+            return { ...d, items: arr };
+          })
+        };
+      }));
+    };
+
+    /* Places */
+    const addPlace = (tripId, place) => {
+      const p = { id: uid(), kind: 'other', name: '', address: '', notes: '', image: '', ...place };
+      setTrips(ts => ts.map(t => t.id === tripId ? { ...t, places: [...t.places, p] } : t));
+    };
+    const updatePlace = (tripId, placeId, patch) => {
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, places: t.places.map(p => p.id === placeId ? { ...p, ...patch } : p)
+      } : t));
+    };
+
+    /* Soft-delete place with undo */
+    const deletePlace = (tripId, placeId) => {
+      const snapshot = trips.find(t => t.id === tripId)?.places.find(p => p.id === placeId);
+      const snapIdx  = trips.find(t => t.id === tripId)?.places.findIndex(p => p.id === placeId) ?? -1;
+      setTrips(ts => ts.map(t => t.id === tripId ? {
+        ...t, places: t.places.filter(p => p.id !== placeId)
+      } : t));
+      pushToast({
+        message: `"${snapshot?.name || 'Place'}" deleted`,
+        onUndo: () => setTrips(ts => ts.map(t => t.id === tripId ? {
+          ...t, places: (() => {
+            const copy = [...t.places];
+            copy.splice(snapIdx === -1 ? copy.length : snapIdx, 0, snapshot);
+            return copy;
+          })()
+        } : t)),
+      });
+    };
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    return (
+      <div className="app">
+        <Header
+          onNewTrip={() => setModal({ type: 'new-trip' })}
+          onExport={() => exportJSON(trips)}
+          onPrint={() => selected && exportTripPDF(selected)}
+          hasSelected={!!selected}
+          dark={dark}
+          onToggleDark={() => setDark(d => !d)}
+        />
+
+        <div className="pane">
+          <TripList trips={trips} selectedId={selectedId} onSelect={(id) => { setSelectedId(id); setSearchQuery(''); }}
+                    onNew={() => setModal({ type: 'new-trip' })} />
+          {selected ? (
+            <TripDetail
+              trip={selected}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onUpdate={(patch) => updateTrip(selected.id, patch)}
+              onDelete={() => deleteTrip(selected.id)}
+              onAddDay={(date) => addDay(selected.id, date)}
+              onUpdateDay={(did, patch) => updateDay(selected.id, did, patch)}
+              onDeleteDay={(did) => deleteDay(selected.id, did)}
+              onAddItem={(did, it) => addItem(selected.id, did, it)}
+              onUpdateItem={(did, iid, patch) => updateItem(selected.id, did, iid, patch)}
+              onDeleteItem={(did, iid) => deleteItem(selected.id, did, iid)}
+              onReorderDays={(fromId, toId) => reorderDays(selected.id, fromId, toId)}
+              onReorderItems={(did, fromId, toId) => reorderItems(selected.id, did, fromId, toId)}
+              onAddPlace={(p) => addPlace(selected.id, p)}
+              onUpdatePlace={(pid, patch) => updatePlace(selected.id, pid, patch)}
+              onDeletePlace={(pid) => deletePlace(selected.id, pid)}
+              onShowImage={setLightbox}
+            />
+          ) : (
+            <div className="detail">
+              <div className="detail-empty">
+                <Icon name="compass" style={{ width: 56, height: 56, color: 'var(--muted)', marginBottom: 16 }} />
+                <div className="display">No trips yet</div>
+                <div style={{ marginBottom: 18 }}>Plan your first adventure to get started.</div>
+                <button className="btn primary" onClick={() => setModal({ type: 'new-trip' })}>
+                  <Icon name="plus" style={{ width: 14, height: 14 }} /> New trip
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {modal?.type === 'new-trip' && (
+          <NewTripModal onClose={() => setModal(null)}
+                        onCreate={(data) => { createTrip(data); setModal(null); }} />
+        )}
+        {lightbox && (
+          <div className="img-lightbox" onClick={() => setLightbox(null)}>
+            <img src={lightbox} alt="" />
+          </div>
+        )}
+        <ToastStack />
+      </div>
+    );
+  }
+
+  /* ---------- Header ---------- */
+  function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark }) {
+    return (
+      <header className="top">
+        <div className="brand">
+          <div className="brand-mark">T</div>
+          <div className="brand-text">
+            <div className="t">Travel Plan</div>
+            <div className="s">Plan · Schedule · Map</div>
+          </div>
+        </div>
+        <div className="top-actions">
+          <button className="theme-toggle" onClick={onToggleDark} title={dark ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <Icon name={dark ? 'sun' : 'moon'} />
+          </button>
+          <button className="btn ghost" onClick={onExport} title="Export all trips as JSON">
+            <Icon name="download" style={{ width: 14, height: 14 }} /> Export
+          </button>
+          {hasSelected && (
+            <button className="btn ghost" onClick={onPrint} title="Save current trip as PDF for offline use">
+              <Icon name="pdf" style={{ width: 14, height: 14 }} /> Save PDF
+            </button>
+          )}
+          <button className="btn accent" onClick={onNewTrip}>
+            <Icon name="plus" style={{ width: 14, height: 14 }} /> New trip
+          </button>
+        </div>
+      </header>
+    );
+  }
+
+  function exportJSON(trips) {
+    const blob = new Blob([JSON.stringify(trips, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `travel-plans-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  /* ---------- Trip list ---------- */
+  function TripList({ trips, selectedId, onSelect, onNew }) {
+    return (
+      <aside className="trip-list">
+        <h3>
+          <span>Your Trips</span>
+          <span className="muted" style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>{trips.length}</span>
+        </h3>
+        {trips.length === 0 ? (
+          <div className="empty-state">
+            No trips yet.<br/>
+            <button className="btn sm primary" style={{ marginTop: 10 }} onClick={onNew}>Create one</button>
+          </div>
+        ) : (
+          trips.map(t => (
+            <div key={t.id} className={`trip-item ${t.id === selectedId ? 'active' : ''}`} onClick={() => onSelect(t.id)}>
+              <div className="ti-flag">{initialOf(t.destination || t.title)}</div>
+              <div className="ti-body">
+                <div className="ti-title">{t.title || 'Untitled trip'}</div>
+                <div className="ti-meta">
+                  {t.destination ? `${t.destination} · ` : ''}{fmtDateRange(t.startDate, t.endDate)}
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+        <div className="add-row">
+          <button className="btn" style={{ width: '100%', justifyContent: 'center' }} onClick={onNew}>
+            <Icon name="plus" style={{ width: 14, height: 14 }} /> New trip
+          </button>
+        </div>
+      </aside>
+    );
+  }
+
+  /* ── Highlight matching text ──────────────────────────── */
+  function Highlight({ text, query }) {
+    if (!query || !text) return <>{text || ''}</>;
+    const idx = text.toLowerCase().indexOf(query.toLowerCase());
+    if (idx === -1) return <>{text}</>;
+    return <>{text.slice(0, idx)}<mark className="search-result-match">{text.slice(idx, idx + query.length)}</mark>{text.slice(idx + query.length)}</>;
+  }
+
+  /* ---------- Trip detail ---------- */
+  function TripDetail(props) {
+    const [openDays, setOpenDays] = useState(() => new Set());
+    const toggleDay = (id) => setOpenDays(s => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
+    const { trip, onUpdate, onDelete,
+            onAddDay, onUpdateDay, onDeleteDay,
+            onAddItem, onUpdateItem, onDeleteItem,
+            onReorderDays, onReorderItems,
+            onAddPlace, onUpdatePlace, onDeletePlace,
+            onShowImage, searchQuery, onSearchChange } = props;
+    const [placeFilter, setPlaceFilter] = useState('all');
+    const [cityFilter, setCityFilter] = useState('all');
+    const [detailsOpen, setDetailsOpen] = useState(false);
+    const searchRef = useRef(null);
+    const q = (searchQuery || '').toLowerCase().trim();
+
+    /* Search logic */
+    const matchedItems = useMemo(() => {
+      if (!q) return [];
+      const results = [];
+      trip.itinerary.forEach(day => {
+        day.items.forEach(item => {
+          const hay = [item.title, item.location, item.notes].join(' ').toLowerCase();
+          if (hay.includes(q)) results.push({ type: 'item', day, item });
+        });
+        const dayHay = [day.label, day.date].join(' ').toLowerCase();
+        if (dayHay.includes(q) && day.items.length === 0) results.push({ type: 'day', day });
+      });
+      return results;
+    }, [q, trip.itinerary]);
+
+    const matchedPlaces = useMemo(() => {
+      if (!q) return [];
+      return trip.places.filter(p => {
+        const hay = [p.name, p.address, p.notes, p.city].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+    }, [q, trip.places]);
+
+    const totalMatches = matchedItems.length + matchedPlaces.length;
+
+    const counts = useMemo(() => {
+      const c = { all: trip.places.length, food: 0, attraction: 0, lodging: 0, transport: 0, other: 0 };
+      const base = cityFilter === 'all' ? trip.places : trip.places.filter(p => (p.city || '') === cityFilter);
+      base.forEach(p => { c[p.kind] = (c[p.kind] || 0) + 1; }); c.all = base.length;
+      return c;
+    }, [trip.places, cityFilter]);
+
+    const cities = useMemo(() => {
+      const s = new Set(); trip.places.forEach(p => { if (p.city) s.add(p.city); });
+      return Array.from(s).sort();
+    }, [trip.places]);
+
+    const visible = trip.places.filter(p =>
+      (placeFilter === 'all' || p.kind === placeFilter) &&
+      (cityFilter === 'all' || (p.city || '') === cityFilter)
+    );
+    const dur = tripDuration(trip.startDate, trip.endDate);
+    const totalActivities = useMemo(() => trip.itinerary.reduce((s, d) => s + d.items.length, 0), [trip.itinerary]);
+
+    /* Keyboard shortcut: Cmd/Ctrl+K focuses search */
+    useEffect(() => {
+      const handler = (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          searchRef.current?.focus();
+        }
+      };
+      window.addEventListener('keydown', handler);
+      return () => window.removeEventListener('keydown', handler);
+    }, []);
+
+    return (
+      <main className="detail">
+        <div className="hero">
+          <div className="hero-row">
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h1 contentEditable suppressContentEditableWarning
+                  onBlur={(e) => onUpdate({ title: e.currentTarget.textContent.trim() || 'Untitled trip' })}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); } }}>
+                {trip.title}
+              </h1>
+              <div className="hero-meta">
+                {trip.origin && <span className="meta-chip"><Icon name="route" /> from {trip.origin}</span>}
+                <span className="meta-chip"><Icon name="pin" /> {trip.destination || 'Add destination'}</span>
+                <span className="meta-chip"><Icon name="calendar" /> {fmtDateRange(trip.startDate, trip.endDate)}{dur ? ` · ${dur} days` : ''}</span>
+                <span className="meta-chip"><Icon name="users" /> {trip.travelers || 1} traveler{(trip.travelers || 1) > 1 ? 's' : ''}</span>
+                {trip.budget && <span className="meta-chip"><Icon name="wallet" /> {trip.currency} {Number(trip.budget).toLocaleString()}</span>}
+                <span className="meta-chip"><Icon name="clock" /> {totalActivities} activities</span>
+              </div>
+            </div>
+            <div className="hero-actions">
+              <button className="btn icon danger" onClick={onDelete} title="Delete trip">
+                <Icon name="trash" style={{ width: 16, height: 16 }} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Search bar ── */}
+        <div style={{ padding: '16px 32px 0' }}>
+          <div id="search-bar">
+            <Icon name="search" />
+            <input
+              ref={searchRef}
+              type="text"
+              placeholder="Search activities, places, notes… (⌘K)"
+              value={searchQuery}
+              onChange={e => onSearchChange(e.target.value)}
+            />
+            {searchQuery && (
+              <>
+                <span className="search-count">{totalMatches} result{totalMatches !== 1 ? 's' : ''}</span>
+                <button id="search-clear" onClick={() => onSearchChange('')} title="Clear search">
+                  <Icon name="x" style={{ width: 14, height: 14 }} />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* ── Search results overlay ── */}
+        {q && (
+          <div style={{ padding: '8px 32px 16px' }}>
+            {totalMatches === 0 && (
+              <div className="place-empty" style={{ marginTop: 0 }}>No results for "{searchQuery}"</div>
+            )}
+
+            {matchedItems.length > 0 && (
+              <>
+                <div className="search-section-label">Activities · {matchedItems.length} match{matchedItems.length !== 1 ? 'es' : ''}</div>
+                {matchedItems.map(({ day, item }, i) => item ? (
+                  <div key={i} style={{ padding: '8px 0 8px 14px', borderLeft: '2px solid var(--line)', marginBottom: 6 }}>
+                    <div style={{ fontSize: 10, color: 'var(--muted)', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      {fmtDayHeader(day.date)}{day.label ? ` · ${day.label}` : ''}
+                    </div>
+                    <div style={{ display: 'flex', gap: 10, alignItems: 'start' }}>
+                      {item.image && (
+                        <div style={{ width: 40, height: 40, borderRadius: 6, backgroundImage: `url(${item.image})`, backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0, cursor: 'zoom-in' }}
+                             onClick={() => onShowImage(item.image)} />
+                      )}
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: 13 }}><Highlight text={item.title} query={searchQuery} /></div>
+                        {item.location && <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>📍 <Highlight text={item.location} query={searchQuery} /></div>}
+                        {item.notes && <div style={{ fontSize: 12, color: 'var(--ink-2)', marginTop: 2 }}><Highlight text={item.notes} query={searchQuery} /></div>}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div key={i} style={{ padding: '6px 0 6px 14px', borderLeft: '2px solid var(--line)', marginBottom: 4, fontSize: 13, color: 'var(--muted)' }}>
+                    <Highlight text={day.label || fmtDayHeader(day.date)} query={searchQuery} />
+                  </div>
+                ))}
+              </>
+            )}
+
+            {matchedPlaces.length > 0 && (
+              <>
+                <div className="search-section-label" style={{ marginTop: matchedItems.length ? 16 : 0 }}>
+                  Places · {matchedPlaces.length} match{matchedPlaces.length !== 1 ? 'es' : ''}
+                </div>
+                {matchedPlaces.map(p => (
+                  <div key={p.id} style={{ display: 'flex', gap: 10, alignItems: 'start', padding: '7px 0', borderBottom: '1px solid var(--line)' }}>
+                    {p.image && (
+                      <div style={{ width: 40, height: 40, borderRadius: 6, backgroundImage: `url(${p.image})`, backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0, cursor: 'zoom-in' }}
+                           onClick={() => onShowImage(p.image)} />
+                    )}
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 13 }}><Highlight text={p.name} query={searchQuery} /></div>
+                      {p.city && <span style={{ fontSize: 10, color: 'var(--muted)' }}>{p.city}</span>}
+                      {p.address && <div style={{ fontSize: 12, color: 'var(--muted)' }}>📍 <Highlight text={p.address} query={searchQuery} /></div>}
+                      {p.notes && <div style={{ fontSize: 12, color: 'var(--ink-2)' }}><Highlight text={p.notes} query={searchQuery} /></div>}
+                    </div>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        )}
+
+        {/* ── Normal content (hidden when searching) ── */}
+        {!q && (
+          <>
+        {/* Details */}
+        <div className="section">
+          <div className="section-head">
+            <button className={`toggle-btn ${detailsOpen ? 'open' : ''}`} onClick={() => setDetailsOpen(o => !o)}>
+              <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              Trip details
+            </button>
+            <span className="pill">Auto-saved</span>
+          </div>
+          {detailsOpen && (<><div className="grid-3" style={{ marginBottom: 14 }}>
+            <div className="field"><label>Departure from</label>
+              <input className="input" value={trip.origin || ''} placeholder="City, Country" onChange={(e) => onUpdate({ origin: e.target.value })} /></div>
+            <div className="field"><label>Destination</label>
+              <input className="input" value={trip.destination} placeholder="City, Country" onChange={(e) => onUpdate({ destination: e.target.value })} /></div>
+            <div className="field"><label>Travelers</label>
+              <input className="input" type="number" min="1" value={trip.travelers} onChange={(e) => onUpdate({ travelers: Math.max(1, Number(e.target.value) || 1) })} /></div>
+          </div>
+          <div className="grid-3" style={{ marginBottom: 14 }}>
+            <div className="field"><label>Start date</label>
+              <input className="input" type="date" value={trip.startDate} onChange={(e) => onUpdate({ startDate: e.target.value })} /></div>
+            <div className="field"><label>End date</label>
+              <input className="input" type="date" value={trip.endDate} onChange={(e) => onUpdate({ endDate: e.target.value })} /></div>
+            <div className="field"><label>Budget ({trip.currency})</label>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <input className="input" type="number" min="0" placeholder="0" value={trip.budget} onChange={(e) => onUpdate({ budget: e.target.value })} />
+                <select className="select" value={trip.currency} style={{ width: 90 }} onChange={(e) => onUpdate({ currency: e.target.value })}>
+                  {['HKD','THB','CNY'].map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="field"><label>Notes</label>
+            <textarea className="textarea" rows="3" placeholder="Reminders, packing list, reservations…"
+              value={trip.notes} onChange={(e) => onUpdate({ notes: e.target.value })} /></div></>)}
+        </div>
+
+        {/* Itinerary */}
+        <div className="section">
+          <div className="section-head">
+            <h2>Itinerary <span className="count">· {trip.itinerary.length} days · {totalActivities} activities</span></h2>
+            {trip.itinerary.length > 0 && (
+              <button className="btn sm ghost" onClick={() => {
+                const allOpen = trip.itinerary.every(d => openDays.has(d.id));
+                setOpenDays(allOpen ? new Set() : new Set(trip.itinerary.map(d => d.id)));
+              }}>
+                {trip.itinerary.every(d => openDays.has(d.id)) ? 'Collapse all' : 'Expand all'}
+              </button>
+            )}
+          </div>
+          {trip.itinerary.length === 0 ? (
+            <div className="place-empty">No days planned yet — add your first day below.</div>
+          ) : (
+            trip.itinerary.map((day, idx) => (
+              <DayCard key={day.id} day={day} index={idx + 1}
+                open={openDays.has(day.id)}
+                onToggle={() => toggleDay(day.id)}
+                onUpdate={(patch) => onUpdateDay(day.id, patch)}
+                onDelete={() => onDeleteDay(day.id)}
+                onAddItem={(it) => onAddItem(day.id, it)}
+                onUpdateItem={(iid, patch) => onUpdateItem(day.id, iid, patch)}
+                onDeleteItem={(iid) => onDeleteItem(day.id, iid)}
+                onReorderItems={(fromId, toId) => onReorderItems(day.id, fromId, toId)}
+                onDragOver={(fromId) => onReorderDays(fromId, day.id)}
+                onShowImage={onShowImage}
+              />
+            ))
+          )}
+          <AddDayInline tripStart={trip.startDate} tripEnd={trip.endDate}
+                        existing={trip.itinerary.map(d => d.date)}
+                        onAdd={(date) => onAddDay(date)} />
+        </div>
+
+        {/* Places */}
+        <div className="section">
+          <div className="section-head">
+            <h2>Places <span className="count">· {trip.places.length} saved</span></h2>
+          </div>
+          {cities.length > 0 && (
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12, flexWrap: 'wrap' }}>
+              <span className="muted" style={{ fontSize: 12, fontWeight: 500 }}>City:</span>
+              <button className={`place-tab ${cityFilter === 'all' ? 'active' : ''}`}
+                      style={{ background: cityFilter === 'all' ? 'var(--accent-bg)' : 'var(--bg-2)', border: '1px solid var(--line)' }}
+                      onClick={() => setCityFilter('all')}>
+                All cities <span className="pill">{trip.places.length}</span>
+              </button>
+              {cities.map(c => {
+                const count = trip.places.filter(p => p.city === c).length;
+                return (
+                  <button key={c} className={`place-tab ${cityFilter === c ? 'active' : ''}`}
+                          style={{ background: cityFilter === c ? 'var(--accent-bg)' : 'var(--bg-2)', border: '1px solid var(--line)' }}
+                          onClick={() => setCityFilter(c)}>
+                    <Icon name="pin" style={{ width: 11, height: 11 }} />{c}
+                    <span className="pill">{count}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          <div className="place-tabs">
+            {[
+              { id: 'all', label: 'All', icon: 'sparkle' },
+              { id: 'food', label: 'Food', icon: 'fork' },
+              { id: 'attraction', label: 'Sights', icon: 'camera' },
+              { id: 'lodging', label: 'Stay', icon: 'bed' },
+              { id: 'transport', label: 'Travel', icon: 'train' },
+              { id: 'other', label: 'Other', icon: 'pin' },
+            ].map(t => (
+              <button key={t.id} className={`place-tab ${placeFilter === t.id ? 'active' : ''}`}
+                      onClick={() => setPlaceFilter(t.id)}>
+                <Icon name={t.icon} style={{ width: 12, height: 12 }} />
+                {t.label} <span className="pill">{counts[t.id] || 0}</span>
+              </button>
+            ))}
+          </div>
+          <div className="place-list">
+            {visible.length === 0 ? (
+              <div className="place-empty">
+                {placeFilter === 'all' ? 'No places saved yet. Add a food spot, attraction, or stay below ↓'
+                  : `No ${KIND_META[placeFilter]?.plural?.toLowerCase()} yet.`}
+              </div>
+            ) : (
+              visible.map(p => (
+                <PlaceRow key={p.id} place={p}
+                  onSave={(patch) => onUpdatePlace(p.id, patch)}
+                  onDelete={() => onDeletePlace(p.id)}
+                  onShowImage={onShowImage} />
+              ))
+            )}
+          </div>
+          <AddPlaceForm onAdd={(p) => onAddPlace(p)} />
+        </div>
+          </>
+        )}
+      </main>
+    );
+  }
+  /* ---------- Day card / Itinerary ---------- */
+  function DayCard({ day, index, open, onToggle, onUpdate, onDelete, onAddItem, onUpdateItem, onDeleteItem, onReorderItems, onDragOver, onShowImage }) {
+    const [editingHead, setEditingHead] = useState(false);
+    const [adding, setAdding] = useState(false);
+    const [editingId, setEditingId] = useState(null);
+    const [isDragOver, setIsDragOver] = useState(false);
+    const dragRef = useRef(null);
+
+    /* Day-level drag handlers (reorder days) */
+    const handleDragStart = (e) => {
+      e.dataTransfer.setData('dayId', day.id);
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => dragRef.current?.classList.add('dragging'), 0);
+    };
+    const handleDragEnd = () => { dragRef.current?.classList.remove('dragging'); setIsDragOver(false); };
+    const handleDragOver = (e) => {
+      e.preventDefault(); e.dataTransfer.dropEffect = 'move';
+      setIsDragOver(true);
+    };
+    const handleDragLeave = () => setIsDragOver(false);
+    const handleDrop = (e) => {
+      e.preventDefault(); setIsDragOver(false);
+      const fromId = e.dataTransfer.getData('dayId');
+      if (fromId && fromId !== day.id) onDragOver(fromId);
+    };
+
+    return (
+      <div ref={dragRef} className={`day-card${isDragOver ? ' drag-over' : ''}`}
+           onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+        <div className="day-head">
+          <div className="day-title">
+            {/* Drag handle for day */}
+            <div className="drag-handle" draggable
+                 onDragStart={handleDragStart} onDragEnd={handleDragEnd}
+                 title="Drag to reorder days">
+              <Icon name="grip" />
+            </div>
+            <div className="day-num">{index}</div>
+            {editingHead ? (
+              <DayHeadEdit day={day} onSave={(patch) => { onUpdate(patch); setEditingHead(false); }} onCancel={() => setEditingHead(false)} />
+            ) : (
+              <button className={`toggle-btn ${open ? 'open' : ''}`} onClick={onToggle}
+                      style={{ textAlign: 'left' }}>
+                <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                <div className="day-info">
+                  <div className="d-date">{fmtDayHeader(day.date)}</div>
+                  {day.label && <div className="d-label" style={{ fontWeight: 400 }}>{day.label} · {day.items.length} activities</div>}
+                  {!day.label && <div className="d-label" style={{ fontWeight: 400 }}>{day.items.length} activities</div>}
+                </div>
+              </button>
+            )}
+          </div>
+          {!editingHead && (
+            <div className="day-actions">
+              <button className="btn icon ghost" onClick={() => setEditingHead(true)} title="Edit day">
+                <Icon name="edit" style={{ width: 14, height: 14 }} />
+              </button>
+              <button className="btn icon ghost danger" onClick={onDelete} title="Delete day">
+                <Icon name="trash" style={{ width: 14, height: 14 }} />
+              </button>
+            </div>
+          )}
+        </div>
+        {open && (
+        <div className="timeline">
+          {day.items.length === 0 && !adding ? (
+            <div className="timeline-empty">No activities scheduled · add one below</div>
+          ) : (
+            day.items.map(item =>
+              editingId === item.id ? (
+                <ItemEdit key={item.id} item={item}
+                  onSave={(patch) => { onUpdateItem(item.id, patch); setEditingId(null); }}
+                  onCancel={() => setEditingId(null)} />
+              ) : (
+                <TimelineItem key={item.id} item={item}
+                  onEdit={() => setEditingId(item.id)}
+                  onDelete={() => onDeleteItem(item.id)}
+                  onReorder={(fromId) => onReorderItems(fromId, item.id)}
+                  onShowImage={onShowImage}
+                  onUpdatePhoto={(img) => onUpdateItem(item.id, { ...item, image: img })} />
+              )
+            )
+          )}
+          {adding && (
+            <ItemEdit
+              item={{ time: '', duration: '', title: '', location: '', notes: '', image: '' }}
+              onSave={(patch) => { onAddItem(patch); setAdding(false); }}
+              onCancel={() => setAdding(false)}
+              isNew
+            />
+          )}
+          {!adding && (
+            <button className="btn sm" style={{ marginTop: 10 }} onClick={() => setAdding(true)}>
+              <Icon name="plus" style={{ width: 12, height: 12 }} /> Add activity
+            </button>
+          )}
+          <div style={{ marginTop: 14, paddingTop: 12, borderTop: '1px dashed var(--line)' }}>
+            <label style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--muted)', fontWeight: 600, display: 'block', marginBottom: 5 }}>
+              End-of-day reminder
+            </label>
+            <textarea className="textarea" rows="2"
+                      placeholder="e.g. Charge power bank, set alarm 6am, pack camera…"
+                      value={day.notes || ''}
+                      onChange={(e) => onUpdate({ notes: e.target.value })} />
+          </div>
+        </div>
+        )}
+      </div>
+    );
+  }
+
+  function DayHeadEdit({ day, onSave, onCancel }) {
+    const [date, setDate] = useState(day.date || '');
+    const [label, setLabel] = useState(day.label || '');
+    return (
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+        <input type="date" className="input" style={{ width: 160 }} value={date} onChange={(e) => setDate(e.target.value)} />
+        <input className="input" style={{ width: 200 }} placeholder="Day label (optional)" value={label} onChange={(e) => setLabel(e.target.value)} />
+        <button className="btn primary sm" onClick={() => onSave({ date, label })}>
+          <Icon name="check" style={{ width: 12, height: 12 }} /> Save
+        </button>
+        <button className="btn ghost sm" onClick={onCancel}>Cancel</button>
+      </div>
+    );
+  }
+
+  function TimelineItem({ item, onEdit, onDelete, onReorder, onShowImage, onUpdatePhoto }) {
+    const [isDragOver, setIsDragOver] = useState(false);
+    const dragRef = useRef(null);
+    const photoInputRef = useRef(null);
+
+    const handleDragStart = (e) => {
+      e.dataTransfer.setData('itemId', item.id);
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => dragRef.current?.classList.add('dragging'), 0);
+    };
+    const handleDragEnd = () => { dragRef.current?.classList.remove('dragging'); setIsDragOver(false); };
+    const handleDragOver = (e) => {
+      if (!e.dataTransfer.types.includes('itemid')) return;
+      e.preventDefault(); e.dataTransfer.dropEffect = 'move'; setIsDragOver(true);
+    };
+    const handleDragLeave = () => setIsDragOver(false);
+    const handleDrop = (e) => {
+      e.preventDefault(); setIsDragOver(false);
+      const fromId = e.dataTransfer.getData('itemId');
+      if (fromId && fromId !== item.id) onReorder(fromId);
+    };
+
+    const handlePhotoUpload = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const data = await fileToDataURL(file, 800);
+        onUpdatePhoto(data);
+      } catch (err) { console.warn('Photo upload failed', err); }
+      e.target.value = '';
+    };
+
+    return (
+      <div ref={dragRef} className={`timeline-item${isDragOver ? ' drag-over' : ''}`}
+           onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+        {/* Drag handle */}
+        <div className="drag-handle" draggable style={{ alignSelf: 'center', marginRight: -6 }}
+             onDragStart={handleDragStart} onDragEnd={handleDragEnd} title="Drag to reorder">
+          <Icon name="grip" />
+        </div>
+        <div className="ti-time">
+          {item.time || '—'}
+          {item.duration && <span className="dur">{item.duration}</span>}
+        </div>
+        <div className="ti-body">
+          <div className="ti-body-with-photo">
+            {item.image && (
+              <div className="ti-photo" style={{ backgroundImage: `url(${item.image})` }}
+                   onClick={() => onShowImage && onShowImage(item.image)} title="Click to enlarge" />
+            )}
+            <div className="ti-body-inner">
+              <div className="ti-title">{item.title || '(untitled)'}</div>
+              {item.location && (
+                <div className="ti-place">
+                  <Icon name="pin" />{item.location}
+                </div>
+              )}
+              {item.notes && <div className="ti-notes">{item.notes}</div>}
+              {!item.image && (
+                <label className="ti-photo-upload" title="Add a photo hint for this activity">
+                  <Icon name="camera" /><span>Add photo</span>
+                  <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoUpload} />
+                </label>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="ti-actions">
+          {item.location && <MapPicker placeOrItem={item} label="Map" />}
+          <button className="btn icon ghost" onClick={() => onEdit()} title="Edit">
+            <Icon name="edit" style={{ width: 13, height: 13 }} />
+          </button>
+          <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
+            <Icon name="trash" style={{ width: 13, height: 13 }} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function ItemEdit({ item, onSave, onCancel, isNew }) {
+    const [draft, setDraft] = useState({ image: '', ...item });
+
+    const handlePhotoChange = async (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      try { const d = await fileToDataURL(file, 800); setDraft(p => ({ ...p, image: d })); }
+      catch (err) { console.warn(err); }
+      e.target.value = '';
+    };
+
+    return (
+      <div className="ti-edit">
+        <div /> {/* spacer for drag handle column */}
+        <div className="ti-time" style={{ alignSelf: 'start' }}>
+          <input type="time" value={draft.time || ''} className="input" style={{ padding: '4px 6px', fontSize: 12 }}
+                 onChange={(e) => setDraft({ ...draft, time: e.target.value })} />
+        </div>
+        <div className="ti-edit-form">
+          <input className="input" placeholder="Activity title (e.g. Visit temple)"
+                 value={draft.title} autoFocus
+                 onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
+          <input className="input" placeholder="Duration (e.g. 2h)" value={draft.duration || ''}
+                 onChange={(e) => setDraft({ ...draft, duration: e.target.value })} />
+          <input className="input span2" placeholder="Place / location (used for Google Maps &amp; Amap link)"
+                 value={draft.location || ''}
+                 onChange={(e) => setDraft({ ...draft, location: e.target.value })} />
+          <textarea className="textarea span2" rows="2" placeholder="Notes"
+                    value={draft.notes || ''}
+                    onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
+          {/* Photo row */}
+          <div className="item-photo-row">
+            <div className="item-photo-preview"
+                 style={{ backgroundImage: draft.image ? `url(${draft.image})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+              {!draft.image && <Icon name="image" />}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <label className="ti-photo-upload">
+                <Icon name="camera" />{draft.image ? 'Replace photo' : 'Add photo hint'}
+                <input type="file" accept="image/*" onChange={handlePhotoChange} />
+              </label>
+              {draft.image && (
+                <button type="button" className="btn ghost sm" style={{ fontSize: 11, padding: '3px 8px' }}
+                        onClick={() => setDraft(p => ({ ...p, image: '' }))}>
+                  <Icon name="x" style={{ width: 10, height: 10 }} /> Remove
+                </button>
+              )}
+            </div>
+          </div>
+          <div className="span2" style={{ display: 'flex', justifyContent: 'flex-end', gap: 6 }}>
+            <button className="btn ghost sm" onClick={onCancel}>Cancel</button>
+            <button className="btn primary sm" onClick={() => onSave(draft)}>
+              <Icon name="check" style={{ width: 12, height: 12 }} /> {isNew ? 'Add activity' : 'Save'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function AddDayInline({ tripStart, tripEnd, existing, onAdd }) {
+    const suggestNext = () => {
+      if (!tripStart) return '';
+      const sorted = [...existing].filter(Boolean).sort();
+      const last = sorted[sorted.length - 1];
+      const base = last ? new Date(last) : new Date(tripStart);
+      if (last) base.setDate(base.getDate() + 1);
+      return base.toISOString().slice(0, 10);
+    };
+    const [date, setDate] = useState('');
+    useEffect(() => { setDate(suggestNext()); /* eslint-disable-next-line */ }, [tripStart, existing.length]);
+    return (
+      <div style={{ display: 'flex', gap: 8, marginTop: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+        <input type="date" className="input" style={{ width: 180 }} value={date}
+               min={tripStart || undefined} max={tripEnd || undefined}
+               onChange={(e) => setDate(e.target.value)} />
+        <button className="btn" onClick={() => { if (date) onAdd(date); }}>
+          <Icon name="plus" style={{ width: 12, height: 12 }} /> Add day
+        </button>
+      </div>
+    );
+  }
+
+  /* ---------- Place row ---------- */
+  function PlaceRow({ place, onSave, onDelete, onShowImage }) {
+    const [editing, setEditing] = useState(false);
+    const [draft, setDraft] = useState(place);
+
+    useEffect(() => { setDraft(place); }, [place.id]);
+
+    const handleImageChange = async (file) => {
+      if (!file) return;
+      try {
+        const data = await fileToDataURL(file);
+        setDraft(d => ({ ...d, image: data }));
+      } catch (e) { alert('Failed to read image'); }
+    };
+
+    if (editing) {
+      const save = () => {
+        onSave({
+          name: draft.name.trim() || 'Untitled place',
+          address: draft.address.trim(),
+          city: (draft.city || '').trim(),
+          notes: draft.notes,
+          kind: draft.kind,
+          image: draft.image || '',
+        });
+        setEditing(false);
+      };
+      return (
+        <div className={`place editing ${draft.kind}`}>
+          <div className="badge"><Icon name={KIND_META[draft.kind]?.icon || 'pin'} /></div>
+          <div className="place-thumb has-img" style={{ backgroundImage: draft.image ? `url(${draft.image})` : 'none' }}>
+            {!draft.image && <Icon name="image" />}
+          </div>
+          <div className="place-edit-grid" style={{ gridColumn: '3 / span 2' }}>
+            <input className="input" placeholder="Place name" value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })} autoFocus />
+            <select className="select" value={draft.kind}
+              onChange={(e) => setDraft({ ...draft, kind: e.target.value })}>
+              {Object.entries(KIND_META).map(([k, m]) => (
+                <option key={k} value={k}>{m.plural}</option>
+              ))}
+            </select>
+            <input className="input" placeholder="City (e.g. Hong Kong)" value={draft.city || ''}
+              onChange={(e) => setDraft({ ...draft, city: e.target.value })} />
+            <input className="input" placeholder="Address or area" value={draft.address}
+              onChange={(e) => setDraft({ ...draft, address: e.target.value })} />
+            <input className="input" placeholder="(legacy)" style={{ display: 'none' }} />
+            <textarea className="textarea" rows="2" placeholder="Notes"
+              style={{ gridColumn: '1 / span 2' }} value={draft.notes}
+              onChange={(e) => setDraft({ ...draft, notes: e.target.value })} />
+            <div style={{ gridColumn: '1 / span 2' }}>
+              <ImageUploader image={draft.image}
+                onChange={handleImageChange}
+                onClear={() => setDraft(d => ({ ...d, image: '' }))} />
+            </div>
+            <div style={{ display: 'flex', gap: 8, gridColumn: '1 / span 2', justifyContent: 'flex-end' }}>
+              <button className="btn ghost sm" onClick={() => { setDraft(place); setEditing(false); }}>Cancel</button>
+              <button className="btn primary sm" onClick={save}>
+                <Icon name="check" style={{ width: 12, height: 12 }} /> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className={`place ${place.kind}`}>
+        <div className="badge" title={KIND_META[place.kind]?.label}>
+          <Icon name={KIND_META[place.kind]?.icon || 'pin'} />
+        </div>
+        <div className={`place-thumb ${place.image ? 'has-img' : ''}`}
+             style={{ backgroundImage: place.image ? `url(${place.image})` : 'none', cursor: place.image ? 'zoom-in' : 'default' }}
+             onClick={() => place.image && onShowImage(place.image)}
+             title={place.image ? 'Click to enlarge' : 'No photo'}>
+          {!place.image && <Icon name="image" />}
+        </div>
+        <div className="place-body">
+          <div className="place-name">
+            {place.name || 'Untitled place'}
+            {place.city && <span className="pill" style={{ marginLeft: 8, fontSize: 10 }}>{place.city}</span>}
+          </div>
+          {place.address && (
+            <div className="place-addr">
+              <Icon name="pin" style={{ width: 11, height: 11 }} />
+              {place.address}
+            </div>
+          )}
+          {place.notes && <div className="place-note">{place.notes}</div>}
+        </div>
+        <div className="place-actions">
+          <MapPicker placeOrItem={place} label="Maps" />
+          <button className="btn icon ghost" onClick={() => setEditing(true)} title="Edit">
+            <Icon name="edit" style={{ width: 14, height: 14 }} />
+          </button>
+          <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
+            <Icon name="trash" style={{ width: 14, height: 14 }} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  function ImageUploader({ image, onChange, onClear }) {
+    const inputRef = useRef(null);
+    return (
+      <div className="img-uploader">
+        <div className="img-preview" style={{ backgroundImage: image ? `url(${image})` : 'none' }}>
+          {!image && <Icon name="image" style={{ width: 22, height: 22 }} />}
+        </div>
+        <div className="img-uploader-actions">
+          <label className="file-button">
+            <Icon name="upload" style={{ width: 12, height: 12 }} />
+            {image ? 'Replace photo' : 'Upload photo'}
+            <input ref={inputRef} type="file" accept="image/*"
+                   onChange={(e) => { onChange(e.target.files[0]); e.target.value = ''; }} />
+          </label>
+          {image && (
+            <button type="button" className="btn ghost sm" style={{ alignSelf: 'flex-start' }} onClick={onClear}>
+              <Icon name="x" style={{ width: 12, height: 12 }} /> Remove photo
+            </button>
+          )}
+          <span className="muted" style={{ fontSize: 11 }}>JPG/PNG · resized to 1400px</span>
+        </div>
+      </div>
+    );
+  }
+
+  /* ---------- Map picker dropdown ---------- */
+  function MapPicker({ placeOrItem, label = 'Maps' }) {
+    const [open, setOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+      if (!open) return;
+      const close = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+      document.addEventListener('mousedown', close);
+      return () => document.removeEventListener('mousedown', close);
+    }, [open]);
+
+    return (
+      <div className="map-picker" ref={ref}>
+        <button className="map-picker-btn" onClick={() => setOpen(o => !o)}
+                title="Open map">
+          <Icon name="map" />
+          {label}
+          <svg className="map-picker-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        {open && (
+          <div className="map-picker-menu" onClick={() => setOpen(false)}>
+            <a className="mp-google" href={mapsUrl(placeOrItem)}
+               target="_blank" rel="noopener noreferrer">
+              <span className="mp-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+                     strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              <span>
+                Google Maps
+                <span className="mp-sub">maps.google.com</span>
+              </span>
+            </a>
+            <a className="mp-amap" href={amapUrl(placeOrItem)}
+               target="_blank" rel="noopener noreferrer">
+              <span className="mp-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"
+                     strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              <span>
+                高德地图 Amap
+                <span className="mp-sub">amap.com · opens app on mobile</span>
+              </span>
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ---------- Add place form ---------- */
+  function AddPlaceForm({ onAdd }) {
+    const [open, setOpen] = useState(false);
+    const [name, setName] = useState('');
+    const [city, setCity] = useState('');
+    const [address, setAddress] = useState('');
+    const [kind, setKind] = useState('food');
+    const [notes, setNotes] = useState('');
+    const [image, setImage] = useState('');
+    const nameRef = useRef(null);
+
+    useEffect(() => { if (open) nameRef.current?.focus(); }, [open]);
+
+    const submit = (e) => {
+      e?.preventDefault();
+      if (!name.trim()) return;
+      onAdd({ name: name.trim(), city: city.trim(), address: address.trim(), kind, notes, image });
+      setName(''); setCity(''); setAddress(''); setNotes(''); setImage(''); setKind('food');
+      nameRef.current?.focus();
+    };
+
+    if (!open) {
+      return (
+        <button className="btn" style={{ marginTop: 12, width: '100%', justifyContent: 'center' }}
+                onClick={() => setOpen(true)}>
+          <Icon name="plus" style={{ width: 14, height: 14 }} /> Add a place
+        </button>
+      );
+    }
+
+    return (
+      <form className="add-place-form" onSubmit={submit}>
+        <div className="row between">
+          <strong style={{ fontSize: 13 }}>Add place</strong>
+          <button type="button" className="btn ghost sm" onClick={() => setOpen(false)}>
+            <Icon name="x" style={{ width: 12, height: 12 }} /> Close
+          </button>
+        </div>
+        <div className="add-place-row">
+          <input ref={nameRef} className="input" placeholder="Name (e.g. Wong Tai Sin Temple)" value={name}
+                 onChange={(e) => setName(e.target.value)} />
+          <input className="input" placeholder="City (e.g. Hong Kong)" value={city}
+                 onChange={(e) => setCity(e.target.value)} />
+          <select className="select" value={kind} onChange={(e) => setKind(e.target.value)}>
+            {Object.entries(KIND_META).map(([k, m]) => (
+              <option key={k} value={k}>{m.plural}</option>
+            ))}
+          </select>
+        </div>
+        <input className="input" placeholder="Address or area" value={address}
+               onChange={(e) => setAddress(e.target.value)} />
+        <textarea className="textarea" rows="2" placeholder="Notes (optional)"
+                  value={notes} onChange={(e) => setNotes(e.target.value)} />
+        <ImageUploader image={image}
+          onChange={async (file) => { if (file) setImage(await fileToDataURL(file)); }}
+          onClear={() => setImage('')} />
+        <div className="row" style={{ justifyContent: 'space-between' }}>
+          <span className="muted" style={{ fontSize: 12 }}>Tip: address powers the Google Maps &amp; Amap links.</span>
+          <div className="row">
+            <button type="button" className="btn ghost sm"
+                    onClick={() => { setName(''); setAddress(''); setNotes(''); setImage(''); }}>Clear</button>
+            <button type="submit" className="btn primary sm" disabled={!name.trim()}>
+              <Icon name="plus" style={{ width: 12, height: 12 }} /> Add place
+            </button>
+          </div>
+        </div>
+      </form>
+    );
+  }
+
+  /* ---------- New trip modal ---------- */
+  function NewTripModal({ onClose, onCreate }) {
+    const [data, setData] = useState({ title: '', destination: '', origin: '', startDate: '', endDate: '', travelers: 1 });
+    const inputRef = useRef(null);
+    useEffect(() => { inputRef.current?.focus(); }, []);
+    useEffect(() => {
+      const k = (e) => { if (e.key === 'Escape') onClose(); };
+      window.addEventListener('keydown', k);
+      return () => window.removeEventListener('keydown', k);
+    }, [onClose]);
+
+    const valid = data.title.trim().length > 0;
+
+    return (
+      <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+        <div className="modal">
+          <div className="modal-head">
+            <h3>New trip</h3>
+            <button className="btn ghost icon" onClick={onClose}>
+              <Icon name="x" style={{ width: 14, height: 14 }} />
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="field">
+              <label>Trip title</label>
+              <input ref={inputRef} className="input" placeholder="e.g. Hong Kong & Shenzhen"
+                value={data.title} onChange={(e) => setData({ ...data, title: e.target.value })}
+                onKeyDown={(e) => { if (e.key === 'Enter' && valid) onCreate(data); }} />
+            </div>
+            <div className="grid-2">
+              <div className="field">
+                <label>From</label>
+                <input className="input" placeholder="Bangkok, Thailand"
+                  value={data.origin} onChange={(e) => setData({ ...data, origin: e.target.value })} />
+              </div>
+              <div className="field">
+                <label>To</label>
+                <input className="input" placeholder="Hong Kong"
+                  value={data.destination} onChange={(e) => setData({ ...data, destination: e.target.value })} />
+              </div>
+            </div>
+            <div className="grid-2">
+              <div className="field">
+                <label>Start date</label>
+                <input className="input" type="date" value={data.startDate}
+                  onChange={(e) => setData({ ...data, startDate: e.target.value })} />
+              </div>
+              <div className="field">
+                <label>End date</label>
+                <input className="input" type="date" value={data.endDate}
+                  onChange={(e) => setData({ ...data, endDate: e.target.value })} />
+              </div>
+            </div>
+            <div className="field">
+              <label>Travelers</label>
+              <input className="input" type="number" min="1" value={data.travelers}
+                onChange={(e) => setData({ ...data, travelers: Math.max(1, Number(e.target.value) || 1) })} />
+            </div>
+          </div>
+          <div className="modal-foot">
+            <button className="btn ghost" onClick={onClose}>Cancel</button>
+            <button className="btn primary" disabled={!valid} onClick={() => onCreate(data)}>
+              <Icon name="check" style={{ width: 12, height: 12 }} /> Create trip
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
