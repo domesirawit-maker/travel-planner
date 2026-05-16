@@ -64,7 +64,10 @@
   [data-theme="dark"] .hero { background: radial-gradient(120% 100% at 100% 0%, var(--accent-bg) 0%, transparent 55%), var(--paper); }
   [data-theme="dark"] #search-bar { background: var(--bg-2); }
   [data-theme="dark"] .search-result-match { background: oklch(68% 0.16 48 / 0.25); color: var(--accent-ink); }
-  * { box-sizing: border-box; }
+  /* Force 24-hour display on webkit time inputs */
+  input[type="time"]::-webkit-datetime-edit-ampm-field { display: none; }
+  input[type="time"] { -webkit-appearance: none; }
+
   html, body { margin: 0; padding: 0; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -724,6 +727,16 @@
   const STORAGE_KEY = 'travelplan.v5';
   const uid = () => Math.random().toString(36).slice(2, 10);
 
+  /* ---------- Time helpers (24-hour display) ---------- */
+  // Accepts "HH:MM" or "H:MM" strings stored by <input type="time">
+  // Returns e.g. "09:30" or "21:45" — always 24-hour, zero-padded
+  const formatTime24 = (t) => {
+    if (!t) return '—';
+    const [h, m] = t.split(':');
+    if (h === undefined || m === undefined) return t;
+    return `${String(Number(h)).padStart(2, '0')}:${String(Number(m)).padStart(2, '0')}`;
+  };
+
   /* ── Toast / Undo system ─────────────────────────────────
      Components call pushToast({ message, onUndo }) and get back
      a dismiss function. The App renders <ToastStack toasts={toasts} />.
@@ -790,7 +803,7 @@
       </div>
       ${day.items.map(it => `
         <div class="pf-item">
-          <div class="pf-time">${esc(it.time || '—')}${it.duration ? `<br><span style="font-size:10px;color:#b0a898">${esc(it.duration)}</span>` : ''}</div>
+          <div class="pf-time">${esc(it.time ? formatTime24(it.time) : '—')}${it.duration ? `<br><span style="font-size:10px;color:#b0a898">${esc(it.duration)}</span>` : ''}</div>
           <div>
             <div class="pf-item-title">${esc(it.title || '(untitled)')}</div>
             ${it.location ? `<div class="pf-item-loc">📍 ${esc(it.location)}</div>` : ''}
@@ -1899,7 +1912,7 @@
           <Icon name="grip" />
         </div>
         <div className="ti-time">
-          {item.time || '—'}
+          {formatTime24(item.time)}
           {item.duration && <span className="dur">{item.duration}</span>}
         </div>
         <div className="ti-body">
@@ -1953,7 +1966,8 @@
         <div /> {/* spacer for drag handle column */}
         <div className="ti-time" style={{ alignSelf: 'start' }}>
           <input type="time" value={draft.time || ''} className="input" style={{ padding: '4px 6px', fontSize: 12 }}
-                 onChange={(e) => setDraft({ ...draft, time: e.target.value })} />
+                 onChange={(e) => setDraft({ ...draft, time: e.target.value })}
+                 step="60" />
         </div>
         <div className="ti-edit-form">
           <input className="input" placeholder="Activity title (e.g. Visit temple)"
