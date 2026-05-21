@@ -1,5 +1,4 @@
 <!doctype html>
-<!-- fix the text -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -30,7 +29,7 @@
     --radius: 14px;
     --transition-theme: background .2s ease, color .2s ease, border-color .2s ease;
   }
- 
+
   /* ── Dark mode ───────────────────────────────────────────── */
   [data-theme="dark"] {
     --bg: #1a1510;
@@ -68,7 +67,7 @@
   /* Force 24-hour display on webkit time inputs */
   input[type="time"]::-webkit-datetime-edit-ampm-field { display: none; }
   input[type="time"] { -webkit-appearance: none; }
- 
+
   html, body { margin: 0; padding: 0; }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -80,7 +79,7 @@
   button { font-family: inherit; cursor: pointer; }
   input, textarea, select { font-family: inherit; color: inherit; }
   .display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -0.01em; }
- 
+
   .app { max-width: 1240px; margin: 0 auto; padding: 32px 32px 80px; }
   @media (max-width: 720px) {
     .app { padding: 16px 14px 60px; }
@@ -124,7 +123,7 @@
   .brand-text .t { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; }
   .brand-text .s { font-size: 12px; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; text-transform: uppercase; }
   .top-actions { display: flex; gap: 10px; align-items: center; }
- 
+
   .btn {
     display: inline-flex; align-items: center; gap: 8px;
     border: 1px solid var(--line-strong);
@@ -146,10 +145,10 @@
   .btn.danger:hover { background: #fde7e3; border-color: var(--danger); }
   .btn.icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
   .btn.sm { padding: 6px 10px; font-size: 12px; }
- 
+
   .pane { display: grid; grid-template-columns: 320px 1fr; gap: 24px; align-items: start; }
   @media (max-width: 880px) { .pane { grid-template-columns: 1fr; } }
- 
+
   .trip-list {
     background: var(--paper); border: 1px solid var(--line);
     border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
@@ -183,7 +182,7 @@
   .trip-item .ti-meta { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .trip-list .add-row { padding: 12px 14px; border-top: 1px solid var(--line); background: var(--bg-2); }
   .empty-state { padding: 32px 20px; text-align: center; color: var(--muted); font-size: 13px; }
- 
+
   .detail {
     background: var(--paper); border: 1px solid var(--line);
     border-radius: var(--radius); box-shadow: var(--shadow);
@@ -191,7 +190,7 @@
   }
   .detail-empty { padding: 80px 32px; text-align: center; color: var(--muted); }
   .detail-empty .display { font-size: 28px; color: var(--ink); margin-bottom: 8px; }
- 
+
   .hero {
     padding: 28px 32px 24px;
     border-bottom: 1px solid var(--line);
@@ -211,7 +210,7 @@
   }
   .meta-chip svg { width: 12px; height: 12px; opacity: .7; }
   .hero-actions { display: flex; gap: 6px; }
- 
+
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label {
     font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
@@ -228,7 +227,7 @@
     box-shadow: 0 0 0 3px var(--accent-bg);
   }
   .textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
- 
+
   .section { padding: 22px 32px; border-bottom: 1px solid var(--line); }
   .section:last-child { border-bottom: 0; }
   .section-head {
@@ -255,11 +254,11 @@
   .day-head .toggle-btn { font-family: inherit; font-size: 14px; font-weight: 600; }
   .day-head .toggle-btn .chev { width: 12px; height: 12px; }
   .section-head .count { color: var(--muted); font-size: 13px; margin-left: 8px; font-weight: 400; }
- 
+
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
- 
+
   /* Itinerary */
   .day-card {
     border: 1px solid var(--line); background: #fff;
@@ -284,32 +283,37 @@
   .timeline-item {
     display: flex; flex-direction: row; align-items: flex-start;
     gap: 8px; padding: 12px 0; border-top: 1px dashed var(--line);
+    min-width: 0; width: 100%;
   }
   .timeline-item:first-child { border-top: 0; }
-  .ti-checkbox { flex-shrink: 0; display: flex; align-items: flex-start; padding-top: 2px; }
-  .drag-handle { flex-shrink: 0; align-self: center; }
+  .ti-checkbox { flex: 0 0 auto; display: flex; align-items: flex-start; padding-top: 2px; }
+  .drag-handle { flex: 0 0 auto; align-self: center; }
   .ti-time {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px; font-weight: 500; color: var(--accent-ink);
     background: var(--accent-bg); border-radius: 7px;
     padding: 4px 6px; text-align: center; line-height: 1.3;
-    white-space: nowrap; flex-shrink: 0; min-width: 34px;
+    white-space: nowrap; flex: 0 0 auto; min-width: 36px;
   }
   .ti-time .dur { display: block; font-size: 10px; color: var(--muted); margin-top: 2px; font-weight: 400; }
-  .ti-body { min-width: 0; flex: 1; }
-  .ti-title { font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.3; }
+  .ti-body { min-width: 0; flex: 1 1 0; overflow: hidden; }
+  .ti-title { font-weight: 600; font-size: 14px; color: var(--ink); line-height: 1.3; min-width: 0; word-break: break-word; }
   .ti-header-row {
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; min-width: 0;
   }
+  .ti-header-row .ti-title { flex: 1 1 0; min-width: 0; }
   .ti-actions-inline { display: flex; gap: 2px; align-items: center; flex-shrink: 0; }
   .ti-place {
     font-size: 12.5px; color: var(--muted); margin-top: 3px;
-    display: flex; align-items: center; gap: 5px;
+    display: flex; align-items: center; gap: 5px; min-width: 0;
   }
-  .ti-place svg { width: 11px; height: 11px; }
+  .ti-place svg { width: 11px; height: 11px; flex-shrink: 0; }
   .ti-place a { color: var(--accent-ink); text-decoration: none; border-bottom: 1px dotted var(--accent); }
   .ti-place a:hover { color: var(--accent); }
-  .ti-notes { font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.45; white-space: pre-wrap; }
+  .ti-notes {
+    font-size: 13px; color: var(--ink-2); margin-top: 5px; line-height: 1.45;
+    white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word; min-width: 0;
+  }
   .ti-actions { display: flex; gap: 2px; }
   .timeline-empty {
     padding: 18px; text-align: center; color: var(--muted); font-size: 13px;
@@ -330,7 +334,7 @@
     .ti-edit-form { grid-template-columns: 1fr; }
     .ti-edit-form .span2 { grid-column: 1; }
   }
- 
+
   /* Places */
   .place-tabs {
     display: inline-flex; background: var(--bg-2); padding: 3px;
@@ -348,7 +352,7 @@
     font-size: 11px; color: var(--muted); font-weight: 500;
   }
   .place-tab.active .pill { background: var(--bg-2); color: var(--ink-2); }
- 
+
   .place-list { display: flex; flex-direction: column; gap: 10px; }
   .place {
     border: 1px solid var(--line); background: #fff; border-radius: 12px;
@@ -368,7 +372,7 @@
   .place.transport .badge { background: var(--sky-bg); color: var(--sky); }
   .place.other .badge { background: var(--bg-2); color: var(--ink-2); }
   .place .badge svg { width: 18px; height: 18px; }
- 
+
   .place-thumb {
     width: 76px; height: 76px; border-radius: 10px;
     background: var(--bg-2); flex: 0 0 76px;
@@ -379,7 +383,7 @@
   }
   .place-thumb svg { width: 22px; height: 22px; opacity: .55; }
   .place-thumb.has-img { color: transparent; }
- 
+
   .place-body { min-width: 0; }
   .place-name { font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 2px; word-wrap: break-word; }
   .place-addr { font-size: 12.5px; color: var(--muted); margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
@@ -394,7 +398,7 @@
   }
   .map-link:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
   .map-link svg { width: 12px; height: 12px; }
- 
+
   .place.editing { background: var(--bg-2); border-color: var(--line-strong); }
   .place-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
   @media (max-width: 600px) {
@@ -404,7 +408,7 @@
     .place-actions { grid-column: 1 / span 2; justify-content: flex-end; }
     .place-edit-grid { grid-template-columns: 1fr; }
   }
- 
+
   /* Image upload */
   /* ── Map picker dropdown ─────────────────────────────── */
   .map-picker { position: relative; display: inline-flex; }
@@ -443,7 +447,7 @@
   .mp-amap   .mp-icon { background: #e6f7ec; color: #0fa958; }
   .mp-sub { display: block; font-size: 10px; font-weight: 400; color: var(--muted); margin-top: 1px; }
   /* ─────────────────────────────────────────────────────── */
- 
+
   .img-uploader {
     border: 1px dashed var(--line-strong);
     background: #fff; border-radius: 10px;
@@ -466,7 +470,7 @@
   }
   .file-button:hover { background: var(--bg-2); }
   .file-button input { display: none; }
- 
+
   .add-place-form {
     background: var(--bg-2); border: 1px dashed var(--line-strong);
     border-radius: 12px; padding: 14px;
@@ -478,7 +482,7 @@
     padding: 20px; text-align: center; color: var(--muted); font-size: 13px;
     border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--bg-2);
   }
- 
+
   /* Modal */
   .modal-backdrop {
     position: fixed; inset: 0; background: rgba(20,16,10,0.45);
@@ -503,7 +507,7 @@
   }
   @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
- 
+
   .row { display: flex; align-items: center; gap: 8px; }
   .between { justify-content: space-between; }
   .muted { color: var(--muted); }
@@ -519,7 +523,7 @@
     background: #fde7e3; border: 1px solid var(--danger);
     border-radius: 8px; padding: 4px 8px; font-size: 12px; color: var(--danger);
   }
- 
+
   /* ── Search bar ─────────────────────────────────────────── */
   #search-bar {
     display: flex; align-items: center; gap: 10px;
@@ -553,7 +557,7 @@
     color: var(--muted); font-weight: 600; padding: 8px 0 4px;
     border-bottom: 1px solid var(--line); margin-bottom: 8px;
   }
- 
+
   /* ── Dark mode toggle button ────────────────────────────── */
   .theme-toggle {
     width: 34px; height: 34px; border-radius: 10px; padding: 0;
@@ -564,12 +568,12 @@
   }
   .theme-toggle:hover { background: var(--bg-2); color: var(--ink); }
   .theme-toggle svg { width: 16px; height: 16px; }
- 
+
   /* ── Activity photo thumbnail ───────────────────────────── */
   .ti-photo {
     width: 52px; height: 52px; border-radius: 8px;
     background: var(--bg-2); background-size: cover; background-position: center;
-    border: 1px solid var(--line); flex-shrink: 0; cursor: zoom-in;
+    border: 1px solid var(--line); flex: 0 0 52px; cursor: zoom-in;
     display: flex; align-items: center; justify-content: center;
     color: var(--muted); overflow: hidden; align-self: start;
   }
@@ -584,7 +588,7 @@
   .ti-photo-upload:hover { color: var(--accent-ink); border-color: var(--accent); }
   .ti-photo-upload svg { width: 11px; height: 11px; }
   .ti-photo-upload input { display: none; }
- 
+
   /* ── Activity photo in ItemEdit form ───────────────────── */
   .item-photo-row {
     grid-column: 1 / span 2;
@@ -597,7 +601,7 @@
     color: var(--muted);
   }
   .item-photo-preview svg { width: 18px; height: 18px; opacity: .4; }
- 
+
   /* when item has photo, body column gets image before text */
   .ti-body-inner { min-width: 0; }
   .ti-body-with-photo { display: flex; gap: 10px; align-items: flex-start; }
@@ -607,7 +611,7 @@
     padding: 24px;
   }
   .img-lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
- 
+
   /* ── Undo Toast ─────────────────────────────────────────── */
   .toast-stack {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -637,7 +641,7 @@
     cursor: pointer; flex-shrink: 0;
   }
   .toast-undo:hover { filter: brightness(1.1); }
- 
+
   /* ── Drag handles ───────────────────────────────────────── */
   .drag-handle {
     cursor: grab; color: var(--muted); display: flex; align-items: center;
@@ -652,7 +656,7 @@
   .timeline-item.drag-over { border-top: 2px solid var(--accent); }
   .day-card.dragging { opacity: .4; }
   .timeline-item.dragging { opacity: .4; }
- 
+
   /* ── #2 Lock banner ─────────────────────────────────────── */
   .lock-banner {
     display: flex; align-items: center; gap: 8px;
@@ -668,7 +672,7 @@
     cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
   }
   .lock-banner-btn:hover { opacity: .8; }
- 
+
   /* ── #4 Mobile stacked layout ───────────────────────────── */
   .mobile-back-btn {
     display: none; align-items: center; gap: 7px;
@@ -693,7 +697,7 @@
     .pane .trip-list { display: block !important; }
     .pane .detail { display: block !important; }
   }
- 
+
   /* ── #9 Auto-saved flash animation ──────────────────────── */
   .saved-pill { display: inline-flex; align-items: center; gap: 5px; transition: all .25s ease; }
   .saved-pill.saved-flash {
@@ -706,7 +710,7 @@
     40%  { transform: scale(1.12); }
     100% { transform: scale(1); }
   }
- 
+
   /* ── #6 Sort indicator on itinerary header ──────────────── */
   .sort-badge {
     display: inline-flex; align-items: center; gap: 4px;
@@ -715,8 +719,8 @@
     padding: 2px 8px; border-radius: 99px; letter-spacing: 0.02em;
   }
   .sort-badge svg { width: 10px; height: 10px; }
- 
- 
+
+
   .edit-lock-btn {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 6px 12px 6px 9px; border-radius: 20px;
@@ -740,13 +744,13 @@
     transition: background .18s;
   }
   .edit-lock-pip.on { background: var(--accent); box-shadow: 0 0 0 2px var(--accent-bg); }
- 
+
   /* Locked state: mute read-only inputs slightly */
   input[readonly], textarea[readonly], select:disabled {
     opacity: 0.75; cursor: default;
   }
- 
- 
+
+
   .ti-checkbox {
     display: flex; align-items: center; justify-content: center;
     cursor: pointer; flex-shrink: 0; align-self: center;
@@ -767,7 +771,7 @@
   .ti-done .ti-place,
   .ti-done .ti-notes { opacity: .35; }
   .ti-done .ti-photo { opacity: .4; }
- 
+
   /* ── Print / PDF styles ─────────────────────────────────── */
   @media print {
     @page { margin: 18mm 16mm; size: A4; }
@@ -833,18 +837,18 @@
 <body>
   <div id="root"></div>
   <div id="print-frame"></div>
- 
+
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
- 
+
   <script type="text/babel" data-presets="env,react">
   const { useState, useEffect, useMemo, useRef, useCallback } = React;
- 
+
   /* ---------- Storage ---------- */
   const STORAGE_KEY = 'travelplan.v5';
   const uid = () => Math.random().toString(36).slice(2, 10);
- 
+
   /* ---------- Time helpers (24-hour display) ---------- */
   // Accepts "HH:MM" or "H:MM" strings stored by <input type="time">
   // Returns e.g. "09:30" or "21:45" — always 24-hour, zero-padded
@@ -854,14 +858,14 @@
     if (h === undefined || m === undefined) return t;
     return `${String(Number(h)).padStart(2, '0')}:${String(Number(m)).padStart(2, '0')}`;
   };
- 
+
   /* ── Toast / Undo system ─────────────────────────────────
      Components call pushToast({ message, onUndo }) and get back
      a dismiss function. The App renders <ToastStack toasts={toasts} />.
   ──────────────────────────────────────────────────────── */
   let _setToasts = null;
   const TOAST_MS = 5000;
- 
+
   function pushToast({ message, onUndo }) {
     const id = uid();
     const timer = setTimeout(() => {
@@ -875,7 +879,7 @@
     _setToasts && _setToasts(ts => [...ts, { id, message, dismiss, hasUndo: !!onUndo }]);
     return dismiss;
   }
- 
+
   function ToastStack() {
     const [toasts, setToasts] = useState([]);
     useEffect(() => { _setToasts = setToasts; return () => { _setToasts = null; }; }, []);
@@ -894,23 +898,23 @@
       </div>
     );
   }
- 
+
   /* ── PDF / Print export ──────────────────────────────────
      Builds static HTML into #print-frame, calls window.print(),
      then clears the frame. Works with the @media print CSS above.
   ──────────────────────────────────────────────────────── */
   const KIND_ABBR = { food:'🍴', attraction:'📷', lodging:'🛏', transport:'🚆', other:'📌' };
- 
+
   function exportTripPDF(trip) {
     const frame = document.getElementById('print-frame');
     if (!frame) return;
- 
+
     const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     const fmtD = (iso) => { if (!iso) return ''; const d = new Date(iso); return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`; };
     const esc = (s) => (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     const dur = trip.startDate && trip.endDate
       ? Math.round((new Date(trip.endDate) - new Date(trip.startDate)) / 86400000) + 1 : null;
- 
+
     const itinHtml = trip.itinerary.map((day, i) => `
       <div class="pf-day-head">
         <div class="pf-day-num">${i + 1}</div>
@@ -930,7 +934,7 @@
         </div>`).join('')}
       ${day.notes ? `<div style="font-size:11px;color:#8a7f70;margin:6px 0 0 14px;border-left:2px solid #f0c89e;padding-left:10px">⏰ ${esc(day.notes)}</div>` : ''}
     `).join('<div style="margin-bottom:20px"></div>');
- 
+
     const placeGroups = {};
     trip.places.forEach(p => {
       const k = p.kind || 'other';
@@ -952,7 +956,7 @@
             </div>
           </div>`).join('')}
       </div>`).join('');
- 
+
     frame.innerHTML = `
       <h1>${esc(trip.title)}</h1>
       <div class="pf-meta">
@@ -963,19 +967,19 @@
         ${trip.budget ? `<span>💰 ${esc(trip.currency)} ${Number(trip.budget).toLocaleString()}</span>` : ''}
       </div>
       ${trip.notes ? `<div style="background:#f6f1e8;border-radius:8px;padding:10px 14px;font-size:12px;color:#4a4239;margin-bottom:16px;white-space:pre-wrap">${esc(trip.notes)}</div>` : ''}
- 
+
       ${trip.itinerary.length ? `<div class="pf-section-label">Itinerary · ${trip.itinerary.length} days</div>${itinHtml}` : ''}
       ${trip.places.length ? `<div class="pf-section-label">Saved places · ${trip.places.length} total</div>${placesHtml}` : ''}
- 
+
       <div class="pf-footer">Travel Plan · Printed ${new Date().toLocaleDateString()} · For offline use</div>
     `;
- 
+
     setTimeout(() => {
       window.print();
       setTimeout(() => { frame.innerHTML = ''; }, 1000);
     }, 80);
   }
- 
+
   const seedTrips = () => ([
     {
       id: uid(),
@@ -1083,7 +1087,7 @@
       ],
     },
   ]);
- 
+
   const loadTrips = () => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -1093,7 +1097,7 @@
       return parsed.map(t => ({ itinerary: [], places: [], origin: '', ...t }));
     } catch { return seedTrips(); }
   };
- 
+
   /* ---------- Helpers ---------- */
   const pad = (n) => String(n).padStart(2, '0');
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -1130,7 +1134,7 @@
     // Use Amap web search — works on both desktop and mobile (opens app via URI on mobile)
     return `https://uri.amap.com/search?keyword=${addr || name}&name=${name}&src=travel-plan&callnative=1`;
   };
- 
+
   const fileToDataURL = (file, maxDim = 1400) => new Promise((resolve, reject) => {
     if (!file) return resolve('');
     const reader = new FileReader();
@@ -1153,7 +1157,7 @@
     };
     reader.readAsDataURL(file);
   });
- 
+
   /* ---------- Icons ---------- */
   const Icon = ({ name, ...rest }) => {
     const paths = {
@@ -1192,7 +1196,7 @@
       </svg>
     );
   };
- 
+
   const KIND_META = {
     food:       { label: 'Food', icon: 'fork',    plural: 'Food spots' },
     attraction: { label: 'Sights', icon: 'camera', plural: 'Tourist attractions' },
@@ -1200,7 +1204,7 @@
     transport:  { label: 'Travel', icon: 'train',  plural: 'Transport' },
     other:      { label: 'Other', icon: 'pin',     plural: 'Other links' },
   };
- 
+
   /* ---------- App ---------- */
   function App() {
     const [trips, setTrips] = useState(loadTrips);
@@ -1212,13 +1216,13 @@
     const [savedFlash, setSavedFlash] = useState(false);
     const saveFlashTimer = useRef(null);
     const [showDetail, setShowDetail] = useState(false);
- 
+
     /* Theme */
     useEffect(() => {
       document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
     }, [dark]);
- 
+
     useEffect(() => {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(trips)); }
       catch (e) { console.warn('Storage full — image too large?', e); }
@@ -1227,11 +1231,11 @@
       clearTimeout(saveFlashTimer.current);
       saveFlashTimer.current = setTimeout(() => setSavedFlash(false), 1800);
     }, [trips]);
- 
+
     const selected = trips.find(t => t.id === selectedId) || null;
- 
+
     const updateTrip = (id, patch) => setTrips(ts => ts.map(t => t.id === id ? { ...t, ...patch } : t));
- 
+
     /* Soft-delete trip with undo */
     const deleteTrip = (id) => {
       const snapshot = trips.find(t => t.id === id);
@@ -1254,7 +1258,7 @@
         },
       });
     };
- 
+
     const createTrip = (data) => {
       const trip = {
         id: uid(), title: data.title || 'Untitled trip',
@@ -1266,7 +1270,7 @@
       setTrips(ts => [trip, ...ts]);
       setSelectedId(trip.id);
     };
- 
+
     /* Itinerary */
     const addDay = (tripId, date) => {
       const day = { id: uid(), date: date || '', label: '', items: [] };
@@ -1280,7 +1284,7 @@
                                     .sort((a, b) => (a.date || '').localeCompare(b.date || ''))
       } : t));
     };
- 
+
     /* Soft-delete day with undo */
     const deleteDay = (tripId, dayId) => {
       const trip = trips.find(t => t.id === tripId);
@@ -1300,7 +1304,7 @@
         } : t)),
       });
     };
- 
+
     /* Drag-reorder days */
     const reorderDays = (tripId, fromId, toId) => {
       setTrips(ts => ts.map(t => {
@@ -1314,7 +1318,7 @@
         return { ...t, itinerary: arr };
       }));
     };
- 
+
     const addItem = (tripId, dayId, item) => {
       const newItem = { id: uid(), time: '', duration: '', title: '', location: '', notes: '', ...item };
       setTrips(ts => ts.map(t => t.id === tripId ? {
@@ -1331,7 +1335,7 @@
         } : d)
       } : t));
     };
- 
+
     /* Soft-delete item with undo */
     const deleteItem = (tripId, dayId, itemId) => {
       const day = trips.find(t => t.id === tripId)?.itinerary.find(d => d.id === dayId);
@@ -1355,7 +1359,7 @@
         } : t)),
       });
     };
- 
+
     /* Drag-reorder items within a day */
     const reorderItems = (tripId, dayId, fromId, toId) => {
       setTrips(ts => ts.map(t => {
@@ -1374,7 +1378,7 @@
         };
       }));
     };
- 
+
     /* Places */
     const addPlace = (tripId, place) => {
       const p = { id: uid(), kind: 'other', name: '', address: '', notes: '', image: '', ...place };
@@ -1385,7 +1389,7 @@
         ...t, places: t.places.map(p => p.id === placeId ? { ...p, ...patch } : p)
       } : t));
     };
- 
+
     /* Soft-delete place with undo */
     const deletePlace = (tripId, placeId) => {
       const snapshot = trips.find(t => t.id === tripId)?.places.find(p => p.id === placeId);
@@ -1404,9 +1408,9 @@
         } : t)),
       });
     };
- 
+
     const [searchQuery, setSearchQuery] = useState('');
- 
+
     return (
       <div className="app">
         <Header
@@ -1420,7 +1424,7 @@
           onToggleEdit={() => setEditMode(m => !m)}
           savedFlash={savedFlash}
         />
- 
+
         {/* ── Locked banner ── */}
         {!editMode && selected && (
           <div className="lock-banner">
@@ -1431,7 +1435,7 @@
             View only — <button className="lock-banner-btn" onClick={() => setEditMode(true)}>tap to enable editing</button>
           </div>
         )}
- 
+
         <div className={`pane${showDetail ? ' pane-detail-view' : ''}`}>
           <TripList trips={trips} selectedId={selectedId}
                     onSelect={(id) => { setSelectedId(id); setSearchQuery(''); setShowDetail(true); }}
@@ -1472,7 +1476,7 @@
             </div>
           )}
         </div>
- 
+
         {modal?.type === 'new-trip' && (
           <NewTripModal onClose={() => setModal(null)}
                         onCreate={(data) => { createTrip(data); setModal(null); }} />
@@ -1486,7 +1490,7 @@
       </div>
     );
   }
- 
+
   /* ---------- Header ---------- */
   function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark, editMode, onToggleEdit, savedFlash }) {
     return (
@@ -1541,7 +1545,7 @@
       </header>
     );
   }
- 
+
   function exportJSON(trips) {
     const blob = new Blob([JSON.stringify(trips, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -1550,7 +1554,7 @@
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
- 
+
   /* ---------- Trip list ---------- */
   function TripList({ trips, selectedId, onSelect, onNew }) {
     return (
@@ -1585,7 +1589,7 @@
       </aside>
     );
   }
- 
+
   /* ── Highlight matching text ──────────────────────────── */
   function Highlight({ text, query }) {
     if (!query || !text) return <>{text || ''}</>;
@@ -1593,7 +1597,7 @@
     if (idx === -1) return <>{text}</>;
     return <>{text.slice(0, idx)}<mark className="search-result-match">{text.slice(idx, idx + query.length)}</mark>{text.slice(idx + query.length)}</>;
   }
- 
+
   /* ---------- Trip detail ---------- */
   function TripDetail(props) {
     const [openDays, setOpenDays] = useState(() => new Set());
@@ -1609,7 +1613,7 @@
     const [detailsOpen, setDetailsOpen] = useState(false);
     const searchRef = useRef(null);
     const q = (searchQuery || '').toLowerCase().trim();
- 
+
     /* Search logic */
     const matchedItems = useMemo(() => {
       if (!q) return [];
@@ -1624,7 +1628,7 @@
       });
       return results;
     }, [q, trip.itinerary]);
- 
+
     const matchedPlaces = useMemo(() => {
       if (!q) return [];
       return trip.places.filter(p => {
@@ -1632,28 +1636,28 @@
         return hay.includes(q);
       });
     }, [q, trip.places]);
- 
+
     const totalMatches = matchedItems.length + matchedPlaces.length;
- 
+
     const counts = useMemo(() => {
       const c = { all: trip.places.length, food: 0, attraction: 0, lodging: 0, transport: 0, other: 0 };
       const base = cityFilter === 'all' ? trip.places : trip.places.filter(p => (p.city || '') === cityFilter);
       base.forEach(p => { c[p.kind] = (c[p.kind] || 0) + 1; }); c.all = base.length;
       return c;
     }, [trip.places, cityFilter]);
- 
+
     const cities = useMemo(() => {
       const s = new Set(); trip.places.forEach(p => { if (p.city) s.add(p.city); });
       return Array.from(s).sort();
     }, [trip.places]);
- 
+
     const visible = trip.places.filter(p =>
       (placeFilter === 'all' || p.kind === placeFilter) &&
       (cityFilter === 'all' || (p.city || '') === cityFilter)
     );
     const dur = tripDuration(trip.startDate, trip.endDate);
     const totalActivities = useMemo(() => trip.itinerary.reduce((s, d) => s + d.items.length, 0), [trip.itinerary]);
- 
+
     /* Keyboard shortcut: Cmd/Ctrl+K focuses search */
     useEffect(() => {
       const handler = (e) => {
@@ -1665,7 +1669,7 @@
       window.addEventListener('keydown', handler);
       return () => window.removeEventListener('keydown', handler);
     }, []);
- 
+
     return (
       <main className="detail">
         {/* Mobile back button */}
@@ -1702,7 +1706,7 @@
             </div>
           </div>
         </div>
- 
+
         {/* ── Search bar ── */}
         <div style={{ padding: '16px 32px 0' }}>
           <div id="search-bar">
@@ -1724,14 +1728,14 @@
             )}
           </div>
         </div>
- 
+
         {/* ── Search results overlay ── */}
         {q && (
           <div style={{ padding: '8px 32px 16px' }}>
             {totalMatches === 0 && (
               <div className="place-empty" style={{ marginTop: 0 }}>No results for "{searchQuery}"</div>
             )}
- 
+
             {matchedItems.length > 0 && (
               <>
                 <div className="search-section-label">Activities · {matchedItems.length} match{matchedItems.length !== 1 ? 'es' : ''}</div>
@@ -1759,7 +1763,7 @@
                 ))}
               </>
             )}
- 
+
             {matchedPlaces.length > 0 && (
               <>
                 <div className="search-section-label" style={{ marginTop: matchedItems.length ? 16 : 0 }}>
@@ -1783,7 +1787,7 @@
             )}
           </div>
         )}
- 
+
         {/* ── Normal content (hidden when searching) ── */}
         {!q && (
           <>
@@ -1826,7 +1830,7 @@
             <textarea className="textarea" rows="3" placeholder="Reminders, packing list, reservations…"
               value={trip.notes} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ notes: e.target.value })} /></div></>)}
         </div>
- 
+
         {/* Itinerary */}
         <div className="section">
           <div className="section-head">
@@ -1872,7 +1876,7 @@
                         onAdd={(date) => onAddDay(date)} />
           )}
         </div>
- 
+
         {/* Places */}
         <div className="section">
           <div className="section-head">
@@ -1945,7 +1949,7 @@
     const [editingId, setEditingId] = useState(null);
     const [isDragOver, setIsDragOver] = useState(false);
     const dragRef = useRef(null);
- 
+
     /* Day-level drag handlers (reorder days) */
     const handleDragStart = (e) => {
       e.dataTransfer.setData('dayId', day.id);
@@ -1963,7 +1967,7 @@
       const fromId = e.dataTransfer.getData('dayId');
       if (fromId && fromId !== day.id) onDragOver(fromId);
     };
- 
+
     return (
       <div ref={dragRef} className={`day-card${isDragOver ? ' drag-over' : ''}`}
            onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
@@ -2053,7 +2057,7 @@
       </div>
     );
   }
- 
+
   function DayHeadEdit({ day, onSave, onCancel }) {
     const [date, setDate] = useState(day.date || '');
     const [label, setLabel] = useState(day.label || '');
@@ -2068,12 +2072,12 @@
       </div>
     );
   }
- 
+
   function TimelineItem({ item, onEdit, onDelete, onReorder, onShowImage, onUpdatePhoto, onToggleDone, editMode }) {
     const [isDragOver, setIsDragOver] = useState(false);
     const dragRef = useRef(null);
     const photoInputRef = useRef(null);
- 
+
     const handleDragStart = (e) => {
       e.dataTransfer.setData('itemId', item.id);
       e.dataTransfer.effectAllowed = 'move';
@@ -2090,7 +2094,7 @@
       const fromId = e.dataTransfer.getData('itemId');
       if (fromId && fromId !== item.id) onReorder(fromId);
     };
- 
+
     const handlePhotoUpload = async (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -2100,7 +2104,7 @@
       } catch (err) { console.warn('Photo upload failed', err); }
       e.target.value = '';
     };
- 
+
     return (
       <div ref={dragRef} className={`timeline-item${isDragOver ? ' drag-over' : ''}${item.done ? ' ti-done' : ''}${editMode ? ' editing-mode' : ''}`}
            onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
@@ -2163,17 +2167,17 @@
       </div>
     );
   }
- 
+
   function ItemEdit({ item, onSave, onCancel, isNew }) {
     const [draft, setDraft] = useState({ image: '', ...item });
- 
+
     const handlePhotoChange = async (e) => {
       const file = e.target.files[0]; if (!file) return;
       try { const d = await fileToDataURL(file, 800); setDraft(p => ({ ...p, image: d })); }
       catch (err) { console.warn(err); }
       e.target.value = '';
     };
- 
+
     return (
       <div className="ti-edit">
         <div className="ti-time" style={{ alignSelf: 'start' }}>
@@ -2222,7 +2226,7 @@
       </div>
     );
   }
- 
+
   function AddDayInline({ tripStart, tripEnd, existing, onAdd }) {
     const suggestNext = () => {
       if (!tripStart) return '';
@@ -2245,14 +2249,14 @@
       </div>
     );
   }
- 
+
   /* ---------- Place row ---------- */
   function PlaceRow({ place, onSave, onDelete, onShowImage, editMode }) {
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState(place);
- 
+
     useEffect(() => { setDraft(place); }, [place.id]);
- 
+
     const handleImageChange = async (file) => {
       if (!file) return;
       try {
@@ -2260,7 +2264,7 @@
         setDraft(d => ({ ...d, image: data }));
       } catch (e) { alert('Failed to read image'); }
     };
- 
+
     if (editing) {
       const save = () => {
         onSave({
@@ -2311,7 +2315,7 @@
         </div>
       );
     }
- 
+
     return (
       <div className={`place ${place.kind}`}>
         <div className="badge" title={KIND_META[place.kind]?.label}>
@@ -2350,7 +2354,7 @@
       </div>
     );
   }
- 
+
   function ImageUploader({ image, onChange, onClear }) {
     const inputRef = useRef(null);
     return (
@@ -2375,19 +2379,19 @@
       </div>
     );
   }
- 
+
   /* ---------- Map picker dropdown ---------- */
   function MapPicker({ placeOrItem, label = 'Maps' }) {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
- 
+
     useEffect(() => {
       if (!open) return;
       const close = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
       document.addEventListener('mousedown', close);
       return () => document.removeEventListener('mousedown', close);
     }, [open]);
- 
+
     return (
       <div className="map-picker" ref={ref}>
         <button className="map-picker-btn" onClick={() => setOpen(o => !o)}
@@ -2432,7 +2436,7 @@
       </div>
     );
   }
- 
+
   /* ---------- Add place form ---------- */
   function AddPlaceForm({ onAdd }) {
     const [open, setOpen] = useState(false);
@@ -2443,9 +2447,9 @@
     const [notes, setNotes] = useState('');
     const [image, setImage] = useState('');
     const nameRef = useRef(null);
- 
+
     useEffect(() => { if (open) nameRef.current?.focus(); }, [open]);
- 
+
     const submit = (e) => {
       e?.preventDefault();
       if (!name.trim()) return;
@@ -2453,7 +2457,7 @@
       setName(''); setCity(''); setAddress(''); setNotes(''); setImage(''); setKind('food');
       nameRef.current?.focus();
     };
- 
+
     if (!open) {
       return (
         <button className="btn" style={{ marginTop: 12, width: '100%', justifyContent: 'center' }}
@@ -2462,7 +2466,7 @@
         </button>
       );
     }
- 
+
     return (
       <form className="add-place-form" onSubmit={submit}>
         <div className="row between">
@@ -2502,7 +2506,7 @@
       </form>
     );
   }
- 
+
   /* ---------- New trip modal ---------- */
   function NewTripModal({ onClose, onCreate }) {
     const [data, setData] = useState({ title: '', destination: '', origin: '', startDate: '', endDate: '', travelers: 1 });
@@ -2513,9 +2517,9 @@
       window.addEventListener('keydown', k);
       return () => window.removeEventListener('keydown', k);
     }, [onClose]);
- 
+
     const valid = data.title.trim().length > 0;
- 
+
     return (
       <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
         <div className="modal">
@@ -2572,7 +2576,7 @@
       </div>
     );
   }
- 
+
   ReactDOM.createRoot(document.getElementById('root')).render(<App />);
   </script>
 </body>
