@@ -281,7 +281,7 @@
   .timeline { padding: 6px 16px 14px; }
   .timeline-item {
     display: grid;
-    grid-template-columns: 18px 78px 1fr auto;
+    grid-template-columns: 18px 18px 78px 1fr auto;
     gap: 8px; align-items: start;
     padding: 12px 0; border-top: 1px dashed var(--line);
   }
@@ -321,8 +321,8 @@
   }
   .ti-edit-form .span2 { grid-column: 1 / span 2; }
   @media (max-width: 600px) {
-    .timeline-item { grid-template-columns: 60px 1fr; }
-    .ti-actions { grid-column: 1 / span 2; justify-content: flex-end; margin-top: 4px; }
+    .timeline-item { grid-template-columns: 14px 14px 60px 1fr; }
+    .ti-actions { grid-column: 1 / span 4; justify-content: flex-end; margin-top: 4px; }
     .ti-edit { grid-template-columns: 60px 1fr; }
   }
 
@@ -593,8 +593,6 @@
   }
   .item-photo-preview svg { width: 18px; height: 18px; opacity: .4; }
 
-  /* Update timeline grid to fit photo column */
-  .timeline-item { grid-template-columns: 18px 78px 1fr auto; }
   /* when item has photo, body column gets image before text */
   .ti-body-inner { min-width: 0; }
   .ti-body-with-photo { display: flex; gap: 10px; align-items: flex-start; }
@@ -649,6 +647,64 @@
   .timeline-item.drag-over { border-top: 2px solid var(--accent); }
   .day-card.dragging { opacity: .4; }
   .timeline-item.dragging { opacity: .4; }
+
+  /* ── Edit-lock toggle ───────────────────────────────────── */
+  .edit-lock-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 12px 6px 9px; border-radius: 20px;
+    border: 1.5px solid var(--line-strong);
+    background: var(--paper); color: var(--muted);
+    font-size: 12.5px; font-weight: 600; cursor: pointer;
+    transition: all .18s ease; user-select: none;
+    letter-spacing: 0.01em;
+  }
+  .edit-lock-btn:hover { border-color: var(--accent); color: var(--ink); }
+  .edit-lock-btn.edit-lock-on {
+    border-color: var(--accent); background: var(--accent-bg);
+    color: var(--accent-ink);
+  }
+  .edit-lock-icon { display: flex; align-items: center; }
+  .edit-lock-icon svg { width: 14px; height: 14px; }
+  .edit-lock-label { line-height: 1; }
+  .edit-lock-pip {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--line-strong); flex-shrink: 0;
+    transition: background .18s;
+  }
+  .edit-lock-pip.on { background: var(--accent); box-shadow: 0 0 0 2px var(--accent-bg); }
+
+  /* Locked state: mute read-only inputs slightly */
+  input[readonly], textarea[readonly], select:disabled {
+    opacity: 0.75; cursor: default;
+  }
+
+
+  .ti-checkbox {
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; align-self: center;
+  }
+  .ti-checkbox input[type="checkbox"] { display: none; }
+  .ti-checkmark {
+    width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0;
+    border: 2px solid var(--line-strong);
+    background: var(--paper);
+    display: grid; place-items: center;
+    transition: background .15s, border-color .15s;
+  }
+  .ti-checkmark svg { width: 10px; height: 10px; color: #fff; }
+  .ti-checkbox:hover .ti-checkmark { border-color: var(--accent); }
+  .ti-done .ti-checkmark { background: var(--accent); border-color: var(--accent); }
+  .ti-done .ti-time { opacity: .4; text-decoration: line-through; }
+  .ti-done .ti-title { opacity: .45; text-decoration: line-through; }
+  .ti-done .ti-place,
+  .ti-done .ti-notes { opacity: .35; }
+  .ti-done .ti-photo { opacity: .4; }
+
+  /* Adjust grid columns to accommodate checkbox */
+  .timeline-item { grid-template-columns: 18px 18px 78px 1fr auto; }
+  @media (max-width: 720px) {
+    .timeline-item { grid-template-columns: 14px 14px 60px 1fr; }
+  }
 
   /* ── Print / PDF styles ─────────────────────────────────── */
   @media print {
@@ -1090,6 +1146,7 @@
     const [modal, setModal] = useState(null);
     const [lightbox, setLightbox] = useState(null);
     const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
+    const [editMode, setEditMode] = useState(false);
 
     /* Theme */
     useEffect(() => {
@@ -1290,6 +1347,8 @@
           hasSelected={!!selected}
           dark={dark}
           onToggleDark={() => setDark(d => !d)}
+          editMode={editMode}
+          onToggleEdit={() => setEditMode(m => !m)}
         />
 
         <div className="pane">
@@ -1300,20 +1359,21 @@
               trip={selected}
               searchQuery={searchQuery}
               onSearchChange={setSearchQuery}
-              onUpdate={(patch) => updateTrip(selected.id, patch)}
-              onDelete={() => deleteTrip(selected.id)}
-              onAddDay={(date) => addDay(selected.id, date)}
-              onUpdateDay={(did, patch) => updateDay(selected.id, did, patch)}
-              onDeleteDay={(did) => deleteDay(selected.id, did)}
-              onAddItem={(did, it) => addItem(selected.id, did, it)}
+              onUpdate={(patch) => editMode && updateTrip(selected.id, patch)}
+              onDelete={() => editMode && deleteTrip(selected.id)}
+              onAddDay={(date) => editMode && addDay(selected.id, date)}
+              onUpdateDay={(did, patch) => editMode && updateDay(selected.id, did, patch)}
+              onDeleteDay={(did) => editMode && deleteDay(selected.id, did)}
+              onAddItem={(did, it) => editMode && addItem(selected.id, did, it)}
               onUpdateItem={(did, iid, patch) => updateItem(selected.id, did, iid, patch)}
-              onDeleteItem={(did, iid) => deleteItem(selected.id, did, iid)}
-              onReorderDays={(fromId, toId) => reorderDays(selected.id, fromId, toId)}
-              onReorderItems={(did, fromId, toId) => reorderItems(selected.id, did, fromId, toId)}
-              onAddPlace={(p) => addPlace(selected.id, p)}
-              onUpdatePlace={(pid, patch) => updatePlace(selected.id, pid, patch)}
-              onDeletePlace={(pid) => deletePlace(selected.id, pid)}
+              onDeleteItem={(did, iid) => editMode && deleteItem(selected.id, did, iid)}
+              onReorderDays={(fromId, toId) => editMode && reorderDays(selected.id, fromId, toId)}
+              onReorderItems={(did, fromId, toId) => editMode && reorderItems(selected.id, did, fromId, toId)}
+              onAddPlace={(p) => editMode && addPlace(selected.id, p)}
+              onUpdatePlace={(pid, patch) => editMode && updatePlace(selected.id, pid, patch)}
+              onDeletePlace={(pid) => editMode && deletePlace(selected.id, pid)}
               onShowImage={setLightbox}
+              editMode={editMode}
             />
           ) : (
             <div className="detail">
@@ -1344,7 +1404,7 @@
   }
 
   /* ---------- Header ---------- */
-  function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark }) {
+  function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark, editMode, onToggleEdit }) {
     return (
       <header className="top">
         <div className="brand">
@@ -1355,6 +1415,30 @@
           </div>
         </div>
         <div className="top-actions">
+          {/* Edit-lock toggle */}
+          <button
+            className={`edit-lock-btn${editMode ? ' edit-lock-on' : ''}`}
+            onClick={onToggleEdit}
+            title={editMode ? 'Lock — disable editing' : 'Unlock — enable editing'}
+          >
+            <span className="edit-lock-icon">
+              {editMode ? (
+                /* unlocked icon */
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="7" width="10" height="7" rx="2"/>
+                  <path d="M5 7V4.5a3 3 0 0 1 6 0"/>
+                </svg>
+              ) : (
+                /* locked icon */
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="7" width="10" height="7" rx="2"/>
+                  <path d="M5 7V4.5a3 3 0 0 1 6 0v2.5"/>
+                </svg>
+              )}
+            </span>
+            <span className="edit-lock-label">{editMode ? 'Editing' : 'Locked'}</span>
+            <span className={`edit-lock-pip${editMode ? ' on' : ''}`}></span>
+          </button>
           <button className="theme-toggle" onClick={onToggleDark} title={dark ? 'Switch to light mode' : 'Switch to dark mode'}>
             <Icon name={dark ? 'sun' : 'moon'} />
           </button>
@@ -1435,7 +1519,7 @@
             onAddItem, onUpdateItem, onDeleteItem,
             onReorderDays, onReorderItems,
             onAddPlace, onUpdatePlace, onDeletePlace,
-            onShowImage, searchQuery, onSearchChange } = props;
+            onShowImage, searchQuery, onSearchChange, editMode } = props;
     const [placeFilter, setPlaceFilter] = useState('all');
     const [cityFilter, setCityFilter] = useState('all');
     const [detailsOpen, setDetailsOpen] = useState(false);
@@ -1503,8 +1587,9 @@
         <div className="hero">
           <div className="hero-row">
             <div style={{ flex: 1, minWidth: 0 }}>
-              <h1 contentEditable suppressContentEditableWarning
-                  onBlur={(e) => onUpdate({ title: e.currentTarget.textContent.trim() || 'Untitled trip' })}
+              <h1 contentEditable={editMode} suppressContentEditableWarning
+                  style={{ cursor: editMode ? 'text' : 'default', outline: 'none' }}
+                  onBlur={(e) => editMode && onUpdate({ title: e.currentTarget.textContent.trim() || 'Untitled trip' })}
                   onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); } }}>
                 {trip.title}
               </h1>
@@ -1518,9 +1603,11 @@
               </div>
             </div>
             <div className="hero-actions">
-              <button className="btn icon danger" onClick={onDelete} title="Delete trip">
-                <Icon name="trash" style={{ width: 16, height: 16 }} />
-              </button>
+              {editMode && (
+                <button className="btn icon danger" onClick={onDelete} title="Delete trip">
+                  <Icon name="trash" style={{ width: 16, height: 16 }} />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -1620,21 +1707,21 @@
           </div>
           {detailsOpen && (<><div className="grid-3" style={{ marginBottom: 14 }}>
             <div className="field"><label>Departure from</label>
-              <input className="input" value={trip.origin || ''} placeholder="City, Country" onChange={(e) => onUpdate({ origin: e.target.value })} /></div>
+              <input className="input" value={trip.origin || ''} placeholder="City, Country" readOnly={!editMode} onChange={(e) => editMode && onUpdate({ origin: e.target.value })} /></div>
             <div className="field"><label>Destination</label>
-              <input className="input" value={trip.destination} placeholder="City, Country" onChange={(e) => onUpdate({ destination: e.target.value })} /></div>
+              <input className="input" value={trip.destination} placeholder="City, Country" readOnly={!editMode} onChange={(e) => editMode && onUpdate({ destination: e.target.value })} /></div>
             <div className="field"><label>Travelers</label>
-              <input className="input" type="number" min="1" value={trip.travelers} onChange={(e) => onUpdate({ travelers: Math.max(1, Number(e.target.value) || 1) })} /></div>
+              <input className="input" type="number" min="1" value={trip.travelers} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ travelers: Math.max(1, Number(e.target.value) || 1) })} /></div>
           </div>
           <div className="grid-3" style={{ marginBottom: 14 }}>
             <div className="field"><label>Start date</label>
-              <input className="input" type="date" value={trip.startDate} onChange={(e) => onUpdate({ startDate: e.target.value })} /></div>
+              <input className="input" type="date" value={trip.startDate} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ startDate: e.target.value })} /></div>
             <div className="field"><label>End date</label>
-              <input className="input" type="date" value={trip.endDate} onChange={(e) => onUpdate({ endDate: e.target.value })} /></div>
+              <input className="input" type="date" value={trip.endDate} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ endDate: e.target.value })} /></div>
             <div className="field"><label>Budget ({trip.currency})</label>
               <div style={{ display: 'flex', gap: 6 }}>
-                <input className="input" type="number" min="0" placeholder="0" value={trip.budget} onChange={(e) => onUpdate({ budget: e.target.value })} />
-                <select className="select" value={trip.currency} style={{ width: 90 }} onChange={(e) => onUpdate({ currency: e.target.value })}>
+                <input className="input" type="number" min="0" placeholder="0" value={trip.budget} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ budget: e.target.value })} />
+                <select className="select" value={trip.currency} style={{ width: 90 }} disabled={!editMode} onChange={(e) => editMode && onUpdate({ currency: e.target.value })}>
                   {['HKD','THB','CNY'].map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
@@ -1642,7 +1729,7 @@
           </div>
           <div className="field"><label>Notes</label>
             <textarea className="textarea" rows="3" placeholder="Reminders, packing list, reservations…"
-              value={trip.notes} onChange={(e) => onUpdate({ notes: e.target.value })} /></div></>)}
+              value={trip.notes} readOnly={!editMode} onChange={(e) => editMode && onUpdate({ notes: e.target.value })} /></div></>)}
         </div>
 
         {/* Itinerary */}
@@ -1673,12 +1760,15 @@
                 onReorderItems={(fromId, toId) => onReorderItems(day.id, fromId, toId)}
                 onDragOver={(fromId) => onReorderDays(fromId, day.id)}
                 onShowImage={onShowImage}
+                editMode={editMode}
               />
             ))
           )}
+          {editMode && (
           <AddDayInline tripStart={trip.startDate} tripEnd={trip.endDate}
                         existing={trip.itinerary.map(d => d.date)}
                         onAdd={(date) => onAddDay(date)} />
+          )}
         </div>
 
         {/* Places */}
@@ -1734,11 +1824,12 @@
                 <PlaceRow key={p.id} place={p}
                   onSave={(patch) => onUpdatePlace(p.id, patch)}
                   onDelete={() => onDeletePlace(p.id)}
-                  onShowImage={onShowImage} />
+                  onShowImage={onShowImage}
+                  editMode={editMode} />
               ))
             )}
           </div>
-          <AddPlaceForm onAdd={(p) => onAddPlace(p)} />
+          {editMode && <AddPlaceForm onAdd={(p) => onAddPlace(p)} />}
         </div>
           </>
         )}
@@ -1746,7 +1837,7 @@
     );
   }
   /* ---------- Day card / Itinerary ---------- */
-  function DayCard({ day, index, open, onToggle, onUpdate, onDelete, onAddItem, onUpdateItem, onDeleteItem, onReorderItems, onDragOver, onShowImage }) {
+  function DayCard({ day, index, open, onToggle, onUpdate, onDelete, onAddItem, onUpdateItem, onDeleteItem, onReorderItems, onDragOver, onShowImage, editMode }) {
     const [editingHead, setEditingHead] = useState(false);
     const [adding, setAdding] = useState(false);
     const [editingId, setEditingId] = useState(null);
@@ -1777,11 +1868,13 @@
         <div className="day-head">
           <div className="day-title">
             {/* Drag handle for day */}
+            {editMode && (
             <div className="drag-handle" draggable
                  onDragStart={handleDragStart} onDragEnd={handleDragEnd}
                  title="Drag to reorder days">
               <Icon name="grip" />
             </div>
+            )}
             <div className="day-num">{index}</div>
             {editingHead ? (
               <DayHeadEdit day={day} onSave={(patch) => { onUpdate(patch); setEditingHead(false); }} onCancel={() => setEditingHead(false)} />
@@ -1797,7 +1890,7 @@
               </button>
             )}
           </div>
-          {!editingHead && (
+          {!editingHead && editMode && (
             <div className="day-actions">
               <button className="btn icon ghost" onClick={() => setEditingHead(true)} title="Edit day">
                 <Icon name="edit" style={{ width: 14, height: 14 }} />
@@ -1824,7 +1917,9 @@
                   onDelete={() => onDeleteItem(item.id)}
                   onReorder={(fromId) => onReorderItems(fromId, item.id)}
                   onShowImage={onShowImage}
-                  onUpdatePhoto={(img) => onUpdateItem(item.id, { ...item, image: img })} />
+                  onUpdatePhoto={(img) => onUpdateItem(item.id, { ...item, image: img })}
+                  onToggleDone={() => onUpdateItem(item.id, { ...item, done: !item.done })}
+                  editMode={editMode} />
               )
             )
           )}
@@ -1836,7 +1931,7 @@
               isNew
             />
           )}
-          {!adding && (
+          {!adding && editMode && (
             <button className="btn sm" style={{ marginTop: 10 }} onClick={() => setAdding(true)}>
               <Icon name="plus" style={{ width: 12, height: 12 }} /> Add activity
             </button>
@@ -1848,7 +1943,8 @@
             <textarea className="textarea" rows="2"
                       placeholder="e.g. Charge power bank, set alarm 6am, pack camera…"
                       value={day.notes || ''}
-                      onChange={(e) => onUpdate({ notes: e.target.value })} />
+                      readOnly={!editMode}
+                      onChange={(e) => editMode && onUpdate({ notes: e.target.value })} />
           </div>
         </div>
         )}
@@ -1871,7 +1967,7 @@
     );
   }
 
-  function TimelineItem({ item, onEdit, onDelete, onReorder, onShowImage, onUpdatePhoto }) {
+  function TimelineItem({ item, onEdit, onDelete, onReorder, onShowImage, onUpdatePhoto, onToggleDone, editMode }) {
     const [isDragOver, setIsDragOver] = useState(false);
     const dragRef = useRef(null);
     const photoInputRef = useRef(null);
@@ -1904,13 +2000,27 @@
     };
 
     return (
-      <div ref={dragRef} className={`timeline-item${isDragOver ? ' drag-over' : ''}`}
+      <div ref={dragRef} className={`timeline-item${isDragOver ? ' drag-over' : ''}${item.done ? ' ti-done' : ''}`}
            onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+        {/* Checkbox */}
+        <label className="ti-checkbox" title={item.done ? 'Mark as not done' : 'Mark as done'}>
+          <input type="checkbox" checked={!!item.done} onChange={() => onToggleDone && onToggleDone()} />
+          <span className="ti-checkmark">
+            {item.done && (
+              <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.2"
+                   strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="2,6 5,9 10,3" />
+              </svg>
+            )}
+          </span>
+        </label>
         {/* Drag handle */}
+        {editMode && (
         <div className="drag-handle" draggable style={{ alignSelf: 'center', marginRight: -6 }}
              onDragStart={handleDragStart} onDragEnd={handleDragEnd} title="Drag to reorder">
           <Icon name="grip" />
         </div>
+        )}
         <div className="ti-time">
           {formatTime24(item.time)}
           {item.duration && <span className="dur">{item.duration}</span>}
@@ -1929,7 +2039,7 @@
                 </div>
               )}
               {item.notes && <div className="ti-notes">{item.notes}</div>}
-              {!item.image && (
+              {!item.image && editMode && (
                 <label className="ti-photo-upload" title="Add a photo hint for this activity">
                   <Icon name="camera" /><span>Add photo</span>
                   <input ref={photoInputRef} type="file" accept="image/*" onChange={handlePhotoUpload} />
@@ -1940,12 +2050,14 @@
         </div>
         <div className="ti-actions">
           {item.location && <MapPicker placeOrItem={item} label="Map" />}
-          <button className="btn icon ghost" onClick={() => onEdit()} title="Edit">
-            <Icon name="edit" style={{ width: 13, height: 13 }} />
-          </button>
-          <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
-            <Icon name="trash" style={{ width: 13, height: 13 }} />
-          </button>
+          {editMode && <>
+            <button className="btn icon ghost" onClick={() => onEdit()} title="Edit">
+              <Icon name="edit" style={{ width: 13, height: 13 }} />
+            </button>
+            <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
+              <Icon name="trash" style={{ width: 13, height: 13 }} />
+            </button>
+          </>}
         </div>
       </div>
     );
@@ -2035,7 +2147,7 @@
   }
 
   /* ---------- Place row ---------- */
-  function PlaceRow({ place, onSave, onDelete, onShowImage }) {
+  function PlaceRow({ place, onSave, onDelete, onShowImage, editMode }) {
     const [editing, setEditing] = useState(false);
     const [draft, setDraft] = useState(place);
 
@@ -2126,12 +2238,14 @@
         </div>
         <div className="place-actions">
           <MapPicker placeOrItem={place} label="Maps" />
-          <button className="btn icon ghost" onClick={() => setEditing(true)} title="Edit">
-            <Icon name="edit" style={{ width: 14, height: 14 }} />
-          </button>
-          <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
-            <Icon name="trash" style={{ width: 14, height: 14 }} />
-          </button>
+          {editMode && <>
+            <button className="btn icon ghost" onClick={() => setEditing(true)} title="Edit">
+              <Icon name="edit" style={{ width: 14, height: 14 }} />
+            </button>
+            <button className="btn icon ghost" style={{ color: 'var(--danger)' }} onClick={onDelete} title="Delete">
+              <Icon name="trash" style={{ width: 14, height: 14 }} />
+            </button>
+          </>}
         </div>
       </div>
     );
