@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- lock to edit -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -648,7 +649,70 @@
   .day-card.dragging { opacity: .4; }
   .timeline-item.dragging { opacity: .4; }
 
-  /* ── Edit-lock toggle ───────────────────────────────────── */
+  /* ── #2 Lock banner ─────────────────────────────────────── */
+  .lock-banner {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--accent-bg); border: 1px solid var(--line-strong);
+    color: var(--accent-ink); border-radius: 10px;
+    padding: 9px 14px; font-size: 12.5px; font-weight: 500;
+    margin-bottom: 16px; animation: bannerIn .2s ease;
+  }
+  @keyframes bannerIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+  .lock-banner-btn {
+    background: none; border: none; padding: 0;
+    color: var(--accent); font-weight: 700; font-size: 12.5px;
+    cursor: pointer; text-decoration: underline; text-underline-offset: 2px;
+  }
+  .lock-banner-btn:hover { opacity: .8; }
+
+  /* ── #4 Mobile stacked layout ───────────────────────────── */
+  .mobile-back-btn {
+    display: none; align-items: center; gap: 7px;
+    background: none; border: none; padding: 14px 18px 0;
+    color: var(--accent-ink); font-size: 13px; font-weight: 600;
+    cursor: pointer; width: 100%;
+  }
+  .mobile-back-btn:hover { opacity: .75; }
+  @media (max-width: 880px) {
+    .pane { display: block; }
+    .pane .trip-list { display: block; }
+    .pane .detail { display: none; }
+    /* When detail is active on mobile, flip visibility */
+    .pane.pane-detail-view .trip-list { display: none; }
+    .pane.pane-detail-view .detail { display: block; }
+    .mobile-back-btn { display: inline-flex; }
+    .lock-banner { margin-bottom: 12px; }
+  }
+  @media (min-width: 881px) {
+    .mobile-back-btn { display: none !important; }
+    .pane { display: grid !important; }
+    .pane .trip-list { display: block !important; }
+    .pane .detail { display: block !important; }
+  }
+
+  /* ── #9 Auto-saved flash animation ──────────────────────── */
+  .saved-pill { display: inline-flex; align-items: center; gap: 5px; transition: all .25s ease; }
+  .saved-pill.saved-flash {
+    background: oklch(90% 0.08 150); color: oklch(35% 0.12 150);
+    border-color: oklch(75% 0.10 150);
+    animation: savedPop .3s ease;
+  }
+  @keyframes savedPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.12); }
+    100% { transform: scale(1); }
+  }
+
+  /* ── #6 Sort indicator on itinerary header ──────────────── */
+  .sort-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; color: var(--muted); font-weight: 500;
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 2px 8px; border-radius: 99px; letter-spacing: 0.02em;
+  }
+  .sort-badge svg { width: 10px; height: 10px; }
+
+
   .edit-lock-btn {
     display: inline-flex; align-items: center; gap: 7px;
     padding: 6px 12px 6px 9px; border-radius: 20px;
@@ -1147,6 +1211,9 @@
     const [lightbox, setLightbox] = useState(null);
     const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
     const [editMode, setEditMode] = useState(false);
+    const [savedFlash, setSavedFlash] = useState(false);
+    const saveFlashTimer = useRef(null);
+    const [showDetail, setShowDetail] = useState(false);
 
     /* Theme */
     useEffect(() => {
@@ -1157,6 +1224,10 @@
     useEffect(() => {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(trips)); }
       catch (e) { console.warn('Storage full — image too large?', e); }
+      // Flash the saved indicator
+      setSavedFlash(true);
+      clearTimeout(saveFlashTimer.current);
+      saveFlashTimer.current = setTimeout(() => setSavedFlash(false), 1800);
     }, [trips]);
 
     const selected = trips.find(t => t.id === selectedId) || null;
@@ -1349,10 +1420,23 @@
           onToggleDark={() => setDark(d => !d)}
           editMode={editMode}
           onToggleEdit={() => setEditMode(m => !m)}
+          savedFlash={savedFlash}
         />
 
-        <div className="pane">
-          <TripList trips={trips} selectedId={selectedId} onSelect={(id) => { setSelectedId(id); setSearchQuery(''); }}
+        {/* ── Locked banner ── */}
+        {!editMode && selected && (
+          <div className="lock-banner">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ width: 13, height: 13, flexShrink: 0 }}>
+              <rect x="3" y="7" width="10" height="7" rx="2"/>
+              <path d="M5 7V4.5a3 3 0 0 1 6 0v2.5"/>
+            </svg>
+            View only — <button className="lock-banner-btn" onClick={() => setEditMode(true)}>tap to enable editing</button>
+          </div>
+        )}
+
+        <div className={`pane${showDetail ? ' pane-detail-view' : ''}`}>
+          <TripList trips={trips} selectedId={selectedId}
+                    onSelect={(id) => { setSelectedId(id); setSearchQuery(''); setShowDetail(true); }}
                     onNew={() => setModal({ type: 'new-trip' })} />
           {selected ? (
             <TripDetail
@@ -1374,6 +1458,8 @@
               onDeletePlace={(pid) => editMode && deletePlace(selected.id, pid)}
               onShowImage={setLightbox}
               editMode={editMode}
+              onBack={() => setShowDetail(false)}
+              savedFlash={savedFlash}
             />
           ) : (
             <div className="detail">
@@ -1404,7 +1490,7 @@
   }
 
   /* ---------- Header ---------- */
-  function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark, editMode, onToggleEdit }) {
+  function Header({ onNewTrip, onExport, onPrint, hasSelected, dark, onToggleDark, editMode, onToggleEdit, savedFlash }) {
     return (
       <header className="top">
         <div className="brand">
@@ -1519,7 +1605,7 @@
             onAddItem, onUpdateItem, onDeleteItem,
             onReorderDays, onReorderItems,
             onAddPlace, onUpdatePlace, onDeletePlace,
-            onShowImage, searchQuery, onSearchChange, editMode } = props;
+            onShowImage, searchQuery, onSearchChange, editMode, onBack, savedFlash } = props;
     const [placeFilter, setPlaceFilter] = useState('all');
     const [cityFilter, setCityFilter] = useState('all');
     const [detailsOpen, setDetailsOpen] = useState(false);
@@ -1584,6 +1670,13 @@
 
     return (
       <main className="detail">
+        {/* Mobile back button */}
+        <button className="mobile-back-btn" onClick={onBack}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 16, height: 16 }}>
+            <path d="M19 12H5M12 5l-7 7 7 7"/>
+          </svg>
+          All trips
+        </button>
         <div className="hero">
           <div className="hero-row">
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -1703,7 +1796,11 @@
               <svg className="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
               Trip details
             </button>
-            <span className="pill">Auto-saved</span>
+            <span className={`pill saved-pill${savedFlash ? ' saved-flash' : ''}`}>
+              {savedFlash ? (
+                <><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 10, height: 10 }}><polyline points="2,6 5,9 10,3"/></svg> Saved</>
+              ) : 'Auto-saved'}
+            </span>
           </div>
           {detailsOpen && (<><div className="grid-3" style={{ marginBottom: 14 }}>
             <div className="field"><label>Departure from</label>
@@ -1735,7 +1832,14 @@
         {/* Itinerary */}
         <div className="section">
           <div className="section-head">
-            <h2>Itinerary <span className="count">· {trip.itinerary.length} days · {totalActivities} activities</span></h2>
+            <h2>Itinerary <span className="count">· {trip.itinerary.length} days · {totalActivities} activities</span>
+              {totalActivities > 0 && (
+                <span className="sort-badge" style={{ marginLeft: 10 }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+                  sorted by time
+                </span>
+              )}
+            </h2>
             {trip.itinerary.length > 0 && (
               <button className="btn sm ghost" onClick={() => {
                 const allOpen = trip.itinerary.every(d => openDays.has(d.id));
